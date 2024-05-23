@@ -1,0 +1,15 @@
+{
+  "name": "@sleepwalker/client-simple",
+  "version": "1.0.0",
+  "description": "",
+  "main": "client-simple.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.5",
+    "cheerio": "^1.0.0-rc.12",
+    "simple-proxy-agent": "^1.1.0",
+    "user-agent-stealth": "https://github.com/ashentouka/user-agent-stealth.git"
+  }
+}

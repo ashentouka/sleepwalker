@@ -1,0 +1,13 @@
+{
+  "name": "@sleepwalker/konsole",
+  "version": "1.0.0",
+  "description": "",
+  "main": "konsole.js",
+  "author": "PDDUBZ3R0 <pdubz3r0@proton.me>",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "chalk-animation": "^1.6.0",
+    "gradient-string": "^2.0.2"
+  }
+}

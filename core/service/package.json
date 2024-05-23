@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-static": "^1.2.6",
+    "node-schedule": "^2.1.1"
+  }
+}

@@ -1,0 +1,63 @@
+[
+  {
+    "type": "proxywrapper",
+    "env": {
+      "development": "http://localhost:7769",
+      "production": "http://proxy-ws.herokuapp.com",
+      "use": "development"
+    },
+    "endpoints": [
+      //{ "http": "/http/proxynova.com" },
+      { "http": "/http/free-proxy-list.net" },
+      { "http": "/http/openproxy.space" },
+      { "socks5": "/socks5/mtpro.xyz" },
+      {
+        "http": "/http/proxy-list.download",
+        "https": "/https/proxy-list.download",
+        "socks4": "/socks4/proxy-list.download",
+        "socks5": "/socks5/proxy-list.download"
+      },
+      {
+        "http": "/http/iproyal.com",
+        "https": "/https/iproyal.com",
+        "socks4": "/socks4/iproyal.com",
+        "socks5": "/socks5/iproyal.com"
+      },
+      {
+        http: "/http/proxylist.geonode.com",
+        socks4: "/socks4/proxylist.geonode.com",
+        socks5: "/socks5/proxylist.geonode.com"
+      },
+      {
+        http: "/http/freeproxy.world",
+        socks4: "/socks4/freeproxy.world",
+        socks5: "/socks5/freeproxy.world"
+      },
+      {
+        "http": "/http/ditatompel.com",
+        "https": "/https/ditatompel.com",
+        "socks5": "/socks5/ditatompel.com"
+      },
+      {
+        "http": "/http/spys.one",
+        "socks5": "/socks5/spys.one"
+      }
+    ]
+  },
+  {
+    "site": "https://api.proxyscrape.com/",
+    "http": "v2/?request=getproxies&protocol=http&timeout=10000&country=all&ssl=allo&anonymity=all&simplified=true",
+    "socks4": "v2/?request=getproxies&protocol=socks4&timeout=10000&country=all",
+    "socks5": "v2/?request=getproxies&protocol=socks5&timeout=10000&country=all"
+  },
+  {
+    "site": "https://api.openproxylist.xyz/",
+    "http": "http.txt",
+    "sdcks4": "socks4.txt",
+    "sdcks5": "socks4.txt"
+  },
+  {
+    "site": "http://hack-hack.chat.ru/",
+    "http": "proxy/allproxy.txt"
+  }
+]
