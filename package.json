@@ -1,0 +1,16 @@
+{
+  "name": "sleepwalker",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "init": "yarn run init-clients && yarn run init-core",
+    "init-clients": "yarn run init-clients-simple && yarn run init-clients-puppeteer",
+    "init-clients-simple": "cd clients/simple && yarn",
+    "init-clients-puppeteer": "cd clients/puppeteer && yarn",
+    "init-core": "yarn run init-konsole && yarn run init-wrapper && yarn run init-armada",
+    "init-konsole": "cd core/konsole && yarn",
+    "init-wrapper": "cd core/wrapper-service && yarn",
+    "init-armada": "cd core/armada && yarn"
+  }
+
+}

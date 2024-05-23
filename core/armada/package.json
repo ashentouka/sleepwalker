@@ -1,7 +1,6 @@
 {
   "name": "@sleepwalker/proxy-armada",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf data/blacklist/* && npm run armada",
@@ -12,7 +11,6 @@
     "debug": "node core/core.js --debug",
     "armada": "node core/core.js"
   },
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "@sleepwalker/client-puppeteer": "../../clients/puppeteer/",

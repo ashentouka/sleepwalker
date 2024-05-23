@@ -1,10 +1,7 @@
 {
   "name": "@sleepwalker/client-simple",
   "version": "1.0.0",
-  "description": "",
   "main": "client-simple.js",
-  "scripts": {},
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.5",
