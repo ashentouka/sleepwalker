@@ -8,7 +8,6 @@
 
             m_spys = require("./modules/spys_one"),
             m_pld = require("./modules/proxy-list-dl"),
-            m_nord = require("./modules/nord"),
             m_vpnfail = require("./modules/vpnfail"),
             m_geo = require("./modules/geonode"),
             m_world = require("./modules/world"),
@@ -119,7 +118,6 @@
         }
 
         queue.push(m_mtpro.socks5());
-        queue.push(m_nord.https());
 
         let dia_protocols = ['http', 'https', 'socks5'];
         for (let proto_idx in dia_protocols) {
