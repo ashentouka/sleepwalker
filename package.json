@@ -10,7 +10,8 @@
     "init-core": "yarn run init-konsole && yarn run init-wrapper && yarn run init-armada",
     "init-konsole": "cd core/konsole && yarn",
     "init-wrapper": "cd core/wrapper-service && yarn",
-    "init-armada": "cd core/armada && yarn"
+    "init-armada": "cd core/armada && yarn",
+    "start": "cd core/service && yarn run start"
   }
 
 }

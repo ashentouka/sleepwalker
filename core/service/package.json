@@ -1,7 +1,10 @@
 {  
-  "name": "@sleepwalker/service",
-  "main": "service.js",
-  "version": "1.0.0",
+  "name": "wrapper",
+  "main": "servo.js",
+  "version": "1.0.2",
+  "scripts":{
+    "start": "node service.js"
+  },
   "dependencies": {
     "express": "^4.19.2",
     "express-static": "^1.2.6",
