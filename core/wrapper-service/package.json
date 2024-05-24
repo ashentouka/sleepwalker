@@ -1,5 +1,5 @@
 {
-  "name": "wrapper",
+  "name": "@sleepwalker/wrapper-service",
   "main": "servo.js",
   "version": "1.0.2",
   "scripts": {

@@ -12,8 +12,8 @@
       const export_path = path.resolve("../armada/data/export/" + fn);
       if (fs.existsSync(export_path)){
         if (fs.existsSync(serve_path)) fs.rmSync(serve_path);
+        fs.copyFileSync(export_path, serve_path);
       }
-      fs.copyFileSync(export_path, serve_path);
     }
 
     copyFile("http.txt");
