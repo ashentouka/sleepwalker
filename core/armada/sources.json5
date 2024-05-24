@@ -10,7 +10,7 @@
       //{ "http": "/http/proxynova.com" },
       { "http": "/http/free-proxy-list.net" },
       { "http": "/http/openproxy.space" },
-      { "https": "/https/nordvpn.com" },
+      //{ "https": "/https/nordvpn.com" },
       { "socks5": "/socks5/mtpro.xyz" },
       {
         "http": "/http/proxy-list.download",
