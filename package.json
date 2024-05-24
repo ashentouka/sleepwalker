@@ -6,7 +6,7 @@
     "init": "yarn run init-clients && yarn run init-core",
     "init-clients": "yarn run init-clients-simple && yarn run init-clients-puppeteer",
     "init-clients-simple": "cd clients/simple && yarn",
-    "init-clients-puppeteer": "cd clients/puppeteer && yarn",
+    "init-clients-puppeteer": "cd clients/puppeteer && yarn && yarn run install-chrome",
     "init-core": "yarn run init-konsole && yarn run init-wrapper && yarn run init-armada && yarn run init-service",
     "init-konsole": "cd core/konsole && yarn",
     "init-wrapper": "cd core/wrapper-service && yarn",
