@@ -2,25 +2,18 @@
   const path = require("path");
     const fs = require("fs");
 
-//  const cmd = require("node:child_process");
-
-/*  function startExpress(){
-    cmd.exec(`cd "${path.resolve(__dirname)}" && bash -c "./express.sh"`, (error, stdout, stderr)=>{
-      console.log("stdout:",stdout);
-      console.log("stderr:",stderr);
-      console.log("error:",error);
-    });
-  }*/
-
   function startExpress(){
     const express = require("./express");
-    //express();
   }
 
   function copyLatest(){
     function copyFile(fn){
-      fs.rmSync(path.resolve(__dirname + "/static/" + fn));
-      fs.copyFileSync(path.resolve("../armada/data/export/" + fn), path.resolve(__dirname + "/static/" + fn));
+      const serve_path = path.resolve(__dirname + "/static/" + fn);
+      const export_path = path.resolve("../armada/data/export/" + fn);
+      if (fs.existsSync(export_path)){
+        if (fs.existsSync(serve_path)) fs.rmSync(serve_path);
+      }
+      fs.copyFileSync(export_path, serve_path);
     }
 
     copyFile("http.txt");
