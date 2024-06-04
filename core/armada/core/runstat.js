@@ -1,7 +1,7 @@
 {
     let runstat;
-    const { chalk, konsole, gradient, StopWatch } = require("@sleepwalker/konsole");
-    const klog = konsole("proxyarmada","red").submodule("proxytester","magentaBright");
+    const { chalk, komponent, gradient, StopWatch } = require("@sleepwalker/konsole");
+    const klog = komponent("proxyarmada","red").komponent("proxytester","magentaBright");
 
     module.exports = function (total,armada) {
         function reportStatus() {

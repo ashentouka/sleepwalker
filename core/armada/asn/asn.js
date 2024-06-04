@@ -6,7 +6,6 @@
             let data = res.data;
 
             fs.writeFileSync("./net.json", JSON.stringify(data, null, 2));
-            console.log(res.data.length);
         })
     }
     const _asn_datamap = ()=> {

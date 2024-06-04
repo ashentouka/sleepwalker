@@ -1,9 +1,11 @@
 {  
-  "name": "wrapper",
+  "name": "service",
   "main": "servo.js",
   "version": "1.0.2",
+  "license": "ISC",
   "scripts":{
-    "start": "node service.js"
+    "clean": "rm -rf node_modules *.log",
+    "start": "node service.js $(whoami) | tee service.log &"
   },
   "dependencies": {
     "express": "^4.19.2",

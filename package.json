@@ -1,18 +1,27 @@
 {
   "name": "sleepwalker",
   "version": "1.0.0",
-  "license": "MIT",
+  "license": "ISC",
   "scripts": {
-    "init": "yarn run init-clients && yarn run init-core",
-    "init-clients": "yarn run init-clients-simple && yarn run init-clients-puppeteer",
-    "init-clients-simple": "cd clients/simple && yarn",
-    "init-clients-puppeteer": "cd clients/puppeteer && yarn && yarn run install-chrome",
-    "init-core": "yarn run init-konsole && yarn run init-wrapper && yarn run init-armada && yarn run init-service",
-    "init-konsole": "cd core/konsole && yarn",
-    "init-wrapper": "cd core/wrapper-service && yarn",
-    "init-armada": "cd core/armada && yarn",
-    "init-service": "cd core/service && yarn",
-    "start": "cd core/service && yarn run start"
+    "setup": "yarn setup-clients && yarn setup-core",
+    "setup-clients": "yarn setup-clients-simple && yarn setup-clients-puppeteer",
+    "setup-clients-simple": "cd clients/simple && yarn",
+    "setup-clients-puppeteer": "cd clients/puppeteer && yarn && yarn install-chrome",
+    "setup-core": "yarn setup-konsole && yarn setup-wrapper && yarn setup-armada && yarn setup-service",
+    "setup-konsole": "cd core/konsole && yarn",
+    "setup-wrapper": "cd core/wrapper && yarn",
+    "setup-armada": "cd core/armada && yarn",
+    "setup-service": "cd core/service && yarn",
+    "wrapper": "cd core/wrapper && yarn run start && tail -0f wrapper.log",
+    "start": "cd core/service && yarn run start && tail -0f armada.log",
+    "clean": "yarn clean-simple && yarn clean-puppeteer && yarn clean-armada && yarn clean-konsole && yarn clean-wrapper && yarn clean-service",
+    "clean-simple": "cd clients/simple && yarn clean",
+    "clean-puppeteer": "cd clients/puppeteer && yarn clean",
+    "clean-armada": "cd core/armada && yarn clean",
+    "clean-konsole": "cd core/konsole && yarn clean",
+    "clean-wrapper": "cd core/wrapper && yarn clean",
+    "clean-service": "cd core/service && yarn clean",
+    "tarball": "tar cvf armada.tar.xz clients/ core/ package.json"
   }
 
 }

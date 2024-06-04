@@ -2,13 +2,15 @@
     const importer = require("./importer"),
         proxytester = require("./proxytester");
 
-    const { StopWatch, konsole } = require("@sleepwalker/konsole").konsole("proxyarmada","red").logger;
+    const { StopWatch, komponent } = require("@sleepwalker/konsole");
     const SegfaultHandler = require('segfault-handler');
         SegfaultHandler.registerHandler('crash.log');
     
+    let log = komponent("proxyarmada","red");
+
     function catcher(msg){
         return function (e){
-            konsole(msg);
+            log.logger(msg);
             console.error(e);
         }
     }
@@ -17,8 +19,13 @@
         return new Promise(resolve => {
             const syserr = (comp => { return catcher("core system failure in: " + comp)});
 
+            log.logger("time to assemble the armada!");
+
             importer().then(proxproto => {
-                proxytester(proxproto,syserr).then(d=>{ konsole("armada assembled (finished)."); resolve(d) });
+                proxytester(proxproto,syserr).then(data=>{ 
+                    log.logger("armada assembled (finished)."); 
+                    resolve(data);
+                });
             }).catch(syserr("importer"));
         })
     }

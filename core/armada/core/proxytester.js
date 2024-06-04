@@ -6,7 +6,7 @@
 
      DisArray = require("disarray");
 
-    const konsole = require("@sleepwalker/konsole").konsole("proxyarmada","red").submodule("proxytester","magentaBright").logger;
+    const konsole = require("@sleepwalker/konsole").komponent("proxyarmada","red").komponent("proxytester","magentaBright");
 
     const simple = require("@sleepwalker/client-simple");
     const protocols = ["http", "socks4", "socks5"];
@@ -23,9 +23,9 @@
     function start(proxproto,syserr) {
         return new Promise(resolve => {
 
-            konsole("starting proxytester.");
+            konsole.logger("starting proxytester.");
             realip().then(real => {
-                konsole(`real ip: ${real.query}`);
+                konsole.logger(`real ip: ${real.query}`);
                 if (fs.existsSync(path.resolve(`${__dirname}/../data/working`))) fs.rmSync(path.resolve(`${__dirname}/../data/working`),{recursive:true});
                 const runstat_lib = require("./runstat"),
                     asnlookup = require("../asn/asnlookup"),

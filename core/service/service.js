@@ -4,6 +4,8 @@
 
   function startExpress(){
     const express = require("./express");
+    const whoami = process.argv[2];
+    express(6660);
   }
 
   function copyLatest(){
@@ -34,23 +36,21 @@
     return promise;
   }
 
-  function startWrapper(){
-    const wrapper = require("../wrapper-service/servo");
-    console.log("Started the wrapper service.");
-    return wrapper();
-  }
-
   function setupCron(){
     const schedule = require("node-schedule");
-    const job = schedule.scheduleJob('* * /1 * * *', runArmada)
+    const job = schedule.scheduleJob("*/30 * * * *", function(){ 
+      console.log(new Date().toJSON(), "Armada scheduled run started.")
+
+      runArmada().then(function(){
+        console.log(new Date().toJSON(), "Armada scheduled run completed.")
+      })
+    })
     console.log("Scheduled armada to provide fresh proxy hourly.");
   }
 
 
-  // Startup Sequencer
+  // Startup Sequence
   copyLatest();
   startExpress();
-    startWrapper().then(function(){
-    runArmada().then(setupCron)
-  })
+  runArmada().then(setupCron);
 }

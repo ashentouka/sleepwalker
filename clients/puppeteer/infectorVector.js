@@ -50,7 +50,8 @@
                 return puppeteer.launch({
                     headless: "new",
                     executablePath: executablePath(),
-
+                    args: [ "--no-sandbox" ]
+                    
                /*     args: [
                         "--no-sandbox",
                         `--user-agent=${userAgent}`]*/

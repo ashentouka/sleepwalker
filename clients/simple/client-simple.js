@@ -1,8 +1,6 @@
 {
 
     const axios = require("axios");
-    // const userAgent = require("../../core/@randomAgent");
-
     const agent = require("user-agent-stealth");
     const userAgent = (opts) => {
         switch (opts.agent) {
@@ -57,7 +55,8 @@
             }
         let axiosOpts = {
             headers: {"User-Agent": userAgent(opts)()},
-            timeout: opts.timeout || (meth === "head" ? 5000 : 30000)
+            timeout: opts.timeout || (meth === "head" ? 5000 : 30000),
+            withCredentials: true
         }
 
         if (proxy) {

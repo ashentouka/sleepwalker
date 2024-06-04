@@ -24,8 +24,8 @@
     })();
 
     
-    const { chalk, konsole, gradient } = require("@sleepwalker/konsole");
-    const klog = konsole("proxyarmada", "red").submodule("importer", "cyan");
+    const { chalk, komponent, gradient } = require("@sleepwalker/konsole");
+    const klog = komponent("proxyarmada", "red").komponent("importer", "cyan");
 
     require('require-json5');
     const source_fn = minimal ? "../minimal.json5" : "../sources.json5";

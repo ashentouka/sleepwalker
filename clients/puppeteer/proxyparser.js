@@ -25,7 +25,7 @@
                             const text = await page.evaluate(_evaluation_, source);
                             cb(null, text);
                         }).catch(e=>{
-                            console.log(e)
+                            //console.log(e)
                     cb(e)
                 })
 

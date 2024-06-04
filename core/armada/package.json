@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf data/blacklist/* && npm run armada",
+    "clean": "rm -rf data node_modules *.log",
     "untested": "node core/core.js --untested",
     "minimal": "node core/core.js --minimal",
     "rescan": "node core/core.js --rescan",

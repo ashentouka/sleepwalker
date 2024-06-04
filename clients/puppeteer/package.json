@@ -4,7 +4,8 @@
   "main": "infectorVector.js",
   "license": "ISC",
   "scripts":{
-    "install-chrome": "npx puppeteer browsers install chrome"
+    "install-chrome": "npx puppeteer browsers install chrome",
+    "clean": "rm -rf node_modules"
   },
   "dependencies": {
     "puppeteer": "^22.6.1",

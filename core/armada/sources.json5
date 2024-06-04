@@ -2,13 +2,14 @@
   {
     "type": "proxywrapper",
     "env": {
-      "development": "http://localhost:7769",
+      "development": "http://localhost:6669",
       "production": "http://proxy-ws.herokuapp.com",
       "use": "development"
     },
     "endpoints": [
-      //{ "http": "/http/proxynova.com" },
+      { "http": "/http/proxynova.com" },
       { "http": "/http/free-proxy-list.net" },
+      { "http": "/http/iplocation.net" },
       { "http": "/http/openproxy.space" },
       //{ "https": "/https/nordvpn.com" },
       { "socks5": "/socks5/mtpro.xyz" },
@@ -26,8 +27,20 @@
       },
       {
         http: "/http/proxylist.geonode.com",
+        https: "/https/proxylist.geonode.com",
         socks4: "/socks4/proxylist.geonode.com",
         socks5: "/socks5/proxylist.geonode.com"
+      },
+      {
+        http: "/http/hasdata.com",
+        https: "/https/hasdata.com",
+        socks4: "/socks4/hasdata.com",
+        socks5: "/socks5/hasdata.com"
+      },
+      {
+        http: "/http/openproxy.space",
+        socks4: "/socks4/openproxy.space",
+        socks5: "/socks5/openproxy.space"
       },
       {
         http: "/http/freeproxy.world",
@@ -103,11 +116,6 @@
         https: "/main/https.txt",
         socks4: "/main/socks4.txt",
         socks5: "/main/socks5.txt"
-      },
-      "NotUnko/autoproxies": {
-        https: "/main/proxies/https",
-        socks4: "/main/proxies/https",
-        socks5: "/main/proxies/https"
       },
       "TheSpeedX/PROXY-List": {
         "http": "/master/http.txt",
@@ -190,10 +198,6 @@
     "http": "http.txt",
     "sdcks4": "socks4.txt",
     "sdcks5": "socks4.txt"
-  },
-  {
-    "site": "http://alexa.lr2b.com/",
-    "http": "proxylist.txt"
   },
   {
     "site": "http://hack-hack.chat.ru/",

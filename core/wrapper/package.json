@@ -1,0 +1,23 @@
+{
+  "name": "wrapper",
+  "main": "servo.js",
+  "version": "1.0.2",
+  "license": "ISC",
+  "scripts": {
+    "clean": "rm -rf data node_modules *.log",
+    "start": "node servo.js >> wrapper.log &"
+  },
+  "dependencies": {
+    "@sleepwalker/client-puppeteer": "../../clients/puppeteer/",
+    "@sleepwalker/client-simple": "../../clients/simple/",
+    "async": "^3.2.5",
+    "cheerio": "^1.0.0-rc.12",
+    "express": "^4.19.2",
+    "node-schedule": "^2.1.1",
+    "unzip": "^0.1.11",
+    "whatwg-url": "^14.0.0"
+  },
+  "resolutions": {
+    "graceful-fs": "^4.2.11"
+  }
+}
