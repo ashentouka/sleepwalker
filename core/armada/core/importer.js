@@ -1,4 +1,7 @@
 {
+    
+    function init() {
+
     let minimal = false, rescan = false, doimport = false, untested = false, debug = false;
     
     
@@ -313,7 +316,7 @@
         }
     }
 
-    function init() {
+
         klog.logger(`has started importing from all sources [${source_fn}]`);
 
         return new Promise(resolve => {

@@ -1,13 +1,15 @@
-{  
+{
   "name": "service",
   "main": "servo.js",
   "version": "1.0.2",
   "license": "ISC",
-  "scripts":{
+  "scripts": {
     "clean": "rm -rf node_modules *.log",
-    "start": "node service.js $(whoami) | tee service.log &"
+    "start": "node service.js >> service.log &"
   },
   "dependencies": {
+    "@sleepwalker/proxy-armada": "../armada/",
+    "disarray": "https://github.com/ashentouka/disarray.git",
     "express": "^4.19.2",
     "express-static": "^1.2.6",
     "node-schedule": "^2.1.1"

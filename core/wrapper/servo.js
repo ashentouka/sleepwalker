@@ -8,20 +8,19 @@
 
         const m_all = {
            m_nova: require("./modules/nova"),
-
             m_dia: require("./modules/diatompel"),
-        //    m_experte: require("./modules/experte"),
+    //  m_experte: require("./modules/experte"),
             m_fpl: require("./modules/fpl"),
             m_geo: require("./modules/geonode"),
-            m_hasdata: require("./modules/hasdata"),
-            m_iploc: require("./modules/iploc"),
-            m_royal: require("./modules/iproyal"),
-           m_mtpro: require("./modules/mtpro"),
-           m_pld: require("./modules/pld"),
-           m_space: require("./modules/space"),
+        m_hasdata: require("./modules/hasdata"),
+          m_iploc: require("./modules/iploc"),
+          m_royal: require("./modules/iproyal"),
+          m_mtpro: require("./modules/mtpro"),
+    //   m_pld: require("./modules/pld"),
+          m_space: require("./modules/space"),
            m_spys: require("./modules/spysone"),
-           m_vpnfail: require("./modules/vpnfail"),
-           m_world: require("./modules/world")
+        m_vpnfail: require("./modules/vpnfail"),
+          m_world: require("./modules/world")
         } 
             ///TODO handle new single day trials
             //    m_hide = require("./modules/hidemy"),

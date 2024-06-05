@@ -1,7 +1,5 @@
 {
-    const importer = require("./importer"),
-        proxytester = require("./proxytester");
-
+    
     const { StopWatch, komponent } = require("@sleepwalker/konsole");
     const SegfaultHandler = require('segfault-handler');
         SegfaultHandler.registerHandler('crash.log');
@@ -21,11 +19,15 @@
 
             log.logger("time to assemble the armada!");
 
+            const importer = require("./importer");
             importer().then(proxproto => {
+
+                const proxytester = require("./proxytester");
                 proxytester(proxproto,syserr).then(data=>{ 
                     log.logger("armada assembled (finished)."); 
                     resolve(data);
                 });
+                
             }).catch(syserr("importer"));
         })
     }
