@@ -2,17 +2,29 @@
 <html>
 <head>
 	<title>Proxy Armada: HTTP/SOCkS4/5 proxies | 5s Response Time</title>
+	<script type="text/javascript">
+		fetch("info.json").then(info=>{
+			info.json().then(data=>{
+
+			})
+		});
+	</script>
 </head>
 <body>
 	<h3>Proxy Armada</h3>
 	<p><strong>HTTP/SOCkS4/5</strong> proxies<br/>
-	5s Response Times<br/>
-	List compiled and Proxies tested <strong>Every Hour</strong>.
+		5s Response Times<br/>
+		List compiled and Proxies tested <strong>Every Hour</strong>.
+		<div id="ts"></div>
 	</p>
 	<ul>
-		<li><a href="http.txt">HTTP/S</li>
-		<li><a href="socks4.txt">SOCKS4</li>
-		<li><a href="socks5.txt">SOCKS5</li>
+		<li>--==||==-- --==||==--</li>
+		<li><span id="http"></span><a href="http.txt">HTTP/S</a></li>
+		<li><span id="socks4"></span><a href="socks4.txt">SOCKS4</a></li>
+		<li><span id="socks5"></span><a href="socks5.txt">SOCKS5</a></li>
+		<li>--==||==-- --==||==--</li>
+		<li><span id="all"></span><a href="all.txt">ALL</a></li>
+		<li>--==||==-- --==||==--</li>
 	</ul>
 
 </body>

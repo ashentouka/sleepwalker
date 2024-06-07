@@ -31,14 +31,14 @@
                     asnlookup = require("../asn/asnlookup"),
                     datastore = require("./datastore");
 
-                let bl_interval = setInterval(function (){
+/*                let bl_interval = setInterval(function (){
                     datastore.blacklist.save(blacklist);
-                }, 30000)
+                }, 30000)*/
                 let work_interval = setInterval(function(){
                     datastore.working.save(working);
                 },10000)
 
-                let blacklist = (() => {
+/*                let blacklist = (() => {
                     let bl = datastore.blacklist;
                     let socks4 = bl.socks4.loadCache();
                     let socks5 = bl.socks5.loadCache();
@@ -48,7 +48,7 @@
                         socks4,
                         http
                     }
-                })();
+                })();*/
 
                 let working = (() => {
                     let socks4 = [], socks5 = [], http = [];
@@ -61,13 +61,13 @@
                 let runstat = runstat_lib(proxproto.totalunique, working);
                 let proxytester = async.queue((task, callback) => {
                     let withprotocol = `${task.protocol}://${task.uri}`;
-                    if (blacklist[task.protocol] && blacklist[task.protocol].includes(task.uri)) {
+              /*      if (blacklist[task.protocol] && blacklist[task.protocol].includes(task.uri)) {
                         runstat.bad();
                         callback();
-                    } else {
+                    } else {*/
                         simple.ipinfo(withprotocol).then(d=>{
                                 if (d.query === real.query) {
-                                    blacklist[task.protocol].push(task.uri);
+                                    //blacklist[task.protocol].push(task.uri);
                                     runstat.bad();
                                     callback();
                                 } else {
@@ -85,7 +85,7 @@
                                         runstat.good()
                                         callback();
                                     } catch (e) {
-                                        blacklist[task.protocol].push(task.uri);
+                                      //..12  blacklist[task.protocol].push(task.uri);
                                         runstat.bad()
                                         callback();
                                     }
@@ -96,7 +96,7 @@
                                 runstat.bad()
                                 callback();
                     });
-                }
+                // }
                 }, 750);
 
                 iterate(type => {
@@ -105,10 +105,10 @@
                     }
                 }, function () {
                     proxytester.drain(function () {
-                        clearInterval(bl_interval);
+                     //   clearInterval(bl_interval);
                         clearInterval(work_interval);
                         datastore.working.save(working);
-                        datastore.blacklist.save(blacklist);
+                       // datastore.blacklist.save(blacklist);
                         runstat.stop();
                         datastore.finished().then(() => {
                             resolve(working);
@@ -120,8 +120,7 @@
                 syserr("realip")(e);
                 resolve();
             });
-        });
-    }
+            }
 
     module.exports = start
 }

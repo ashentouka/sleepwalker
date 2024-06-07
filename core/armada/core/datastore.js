@@ -38,7 +38,7 @@
         }
     }
 
-    let blacklist = new ArmadaData("blacklist");
+//    let blacklist = new ArmadaData("blacklist");
     let untested, armada, working;
 
     function bounce() {
@@ -61,7 +61,7 @@
     }
 
     module.exports = {
-        blacklist,
+//        blacklist,
         untested,
         armada,
         working,

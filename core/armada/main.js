@@ -10,12 +10,12 @@
     }
 
     let working = collect("working");
-    let blacklist = collect("blacklist");
+//    let blacklist = collect("blacklist");
     let armada = collect("export");
 
     module.exports = {
         working,
-        blacklist,
+  //      blacklist,
         armada
     }
 

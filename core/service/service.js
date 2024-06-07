@@ -50,7 +50,7 @@
   }
 
   function runArmada(){
-    fs.rmSync(path.resolve("../armada/data/blacklist/"), { recursive: true, force: true});
+    // fs.rmSync(path.resolve("../armada/data/blacklist/"), { recursive: true, force: true});
     const armada = require("../armada/core/core");
     let promise = armada();
     promise.then(function(){

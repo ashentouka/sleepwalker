@@ -12,8 +12,8 @@
     "setup-wrapper": "cd core/wrapper && yarn",
     "setup-armada": "cd core/armada && yarn",
     "setup-service": "cd core/service && yarn",
-    "wrapper": "cd core/wrapper && yarn run start && tail -0f wrapper.log",
-    "start": "cd core/service && yarn run start && tail -0f armada.log",
+    "wrapper": "cd core/wrapper && yarn run start",
+    "start": "cd core/service && yarn run start",
     "clean": "yarn clean-simple && yarn clean-puppeteer && yarn clean-armada && yarn clean-konsole && yarn clean-wrapper && yarn clean-service",
     "clean-simple": "cd clients/simple && yarn clean",
     "clean-puppeteer": "cd clients/puppeteer && yarn clean",
@@ -21,7 +21,7 @@
     "clean-konsole": "cd core/konsole && yarn clean",
     "clean-wrapper": "cd core/wrapper && yarn clean",
     "clean-service": "cd core/service && yarn clean",
-    "tarball": "tar cvf armada.tar.xz clients/ core/ package.json"
+    "tarball": "rm armada.tar.xz && tar cvf armada.tar.xz clients/ core/ package.json"
   }
 
 }
