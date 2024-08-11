@@ -7,12 +7,18 @@
       "use": "development"
     },
     "endpoints": [
-     // { "http": "/http/proxynova.com" },
+      { "http": "/http/proxynova.com" },
       { "http": "/http/free-proxy-list.net" },
       { "http": "/http/iplocation.net" },
       { "http": "/http/openproxy.space" },
       //{ "https": "/https/nordvpn.com" },
       { "socks5": "/socks5/mtpro.xyz" },
+      {
+        "http": "/http/free.proxy-sale.com",
+        "https": "/https/free.proxy-sale.com",
+        "socks4": "/socks4/free.proxy-sale.com",
+        "socks5": "/socks5/free.proxy-sale.com"
+      },
       {
         "http": "/http/proxy-list.download",
         "https": "/https/proxy-list.download",
