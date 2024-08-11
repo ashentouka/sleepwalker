@@ -1,0 +1,13 @@
+{
+  "name": "puppeteer-extra-plugin-viewport",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "puppeteer-extra-plugin": "^3.2.3",
+    "user-agent-stealth": "https://github.com/ashentouka/user-agent-stealth.git"
+  }
+}

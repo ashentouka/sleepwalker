@@ -1,0 +1,16 @@
+{
+  "name": "puppeteer-extra-plugin-escapecha",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "chalk-css-colors": "https://github.com/paulwardrip/chalk-css-colors.git",
+    "node-wit": "^6.6.0",
+    "puppeteer-afp": "^1.1.6",
+    "puppeteer-extra-plugin": "^3.2.3",
+    "uuid": "^10.0.0"
+  }
+}

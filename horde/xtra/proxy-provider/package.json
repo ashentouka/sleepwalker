@@ -1,0 +1,17 @@
+{
+  "name": "puppeteer-extra-plugin-proxy-provider",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "got": "^11.8.5",
+    "http-proxy-agent": "^5.0.0",
+    "https-proxy-agent": "^5.0.1",
+    "puppeteer-extra-plugin": "^3.2.3",
+    "socks-proxy-agent": "^7.0.0",
+    "tough-cookie": "^4.1.4"
+  }
+}

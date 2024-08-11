@@ -1,0 +1,11 @@
+{
+  "name": "@sleepwalker/disarray",
+  "version": "1.2.0",
+  "description": "An array that randomizes order of entries.",
+  "main": "disarray.js",
+  "scripts": {
+    "preinstall": "cat ascii",
+    "clean": "rm -rf node_modules"
+  },
+  "license": "ISC"
+}

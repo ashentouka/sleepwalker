@@ -1,0 +1,42 @@
+<html>
+<head>
+	<title>@sleepwalker/puppeteer-extra/plausible-referrer</title>
+</head>
+<body>
+	<h1>@sleepwalker</h1>
+	<h2>puppeteer-extra</h2>
+	<h3>plausible-referrer</h3>
+	<textarea id="captures" style="width: 100%; height: 25rem"></textarea>
+
+	<script type="text/javascript">
+
+		const STORED_AS = "@sleepwalker/puppeteer-extra/plausible-referrer";
+		let collection = (()=>{ 
+			let str = localStorage.getItem(STORED_AS);
+			if (!str) {
+				return [];
+			} else {
+				return JSON.parse(str);
+			}
+		})();
+
+		function saveThem(){
+			localStorage.setItem(STORED_AS,JSON.stringify(collection));
+		}
+
+		let newone = document.referrer;
+		if (newone && !collection.includes(newone)){
+			collection.push(newone);
+			saveThem();
+		}
+
+		const captures = document.getElementById("captures");
+		captures.value = collection.join("\n");
+		captures.addEventListener("input", function(event) {
+			collection = captures.value.trim().split("\n")
+			saveThem();
+			console.log("Saved.");
+		})
+	</script>
+</body>
+</html>
