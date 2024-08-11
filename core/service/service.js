@@ -23,7 +23,7 @@
   function startExpress(){
      const express = port=>{
         const data = require("../data/datasourcery");
-        const bodyParser = require("bodyParser");
+        const bodyParser = require("body-parser");
         const express = require('express');
         const path = require("path");
         const app = express();
@@ -57,10 +57,11 @@
           try {
             filenumbers[req.params["proto"]]++;
             savefnfile(filenumbers);
-            let fpath = path.resolve(`${impath}${req.params["proto"]}-${filenumbers[req.params["proto"]]}.txt`);
+            let fpath = path.resolve(`${impath}/${req.params["proto"]}-${filenumbers[req.params["proto"]]}.txt`);
             let fbody = req.body;
             fs.writeFileSync(fpath, fbody);
             res.status(200)
+            res.send("PROXY ARMADA\n¡piña colada!\nboxy tostada\ndusty piñata");
           } catch(e) {
             res.status(500);
             res.send(e.message);
