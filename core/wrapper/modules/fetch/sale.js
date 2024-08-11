@@ -74,7 +74,6 @@
                         await Promise.all(promises);
                         await scheduler.terminate();
 
-                        console.log(protocache);
                         cb(null,protocache["http"]);
                         resolve();
                     }
