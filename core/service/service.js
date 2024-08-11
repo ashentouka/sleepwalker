@@ -22,7 +22,8 @@
 
   function startExpress(){
      const express = port=>{
-        const data = require("../data/datasourcery")
+        const data = require("../data/datasourcery");
+        const bodyParser = require("bodyParser");
         const express = require('express');
         const path = require("path");
         const app = express();
@@ -50,18 +51,8 @@
             res.send(output.join("\n"));
         });
         
-        app.use(function(req, res, next){
-          if (req.is('text/*')) {
-            req.text = '';
-            req.setEncoding('utf8');
-            req.on('data', function(chunk){ req.text += chunk });
-            req.on('end', next);
-          } else {
-            next();
-          }
-        });
-
-        app.use(require("./plaintext"));
+        // parse an HTML body as a string
+        app.use(bodyParser.text({ type: 'text/*' }))
         app.post('/import/:proto', (req,res) => {
           try {
             filenumbers[req.params["proto"]]++;
