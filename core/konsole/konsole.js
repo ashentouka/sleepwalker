@@ -3,23 +3,19 @@
     const StopWatch = require("./stopwatch");
     const gradient = require("gradient-string");
     const animation = require("chalk-animation");
+    const colors = require("chalk-css-colors");
 
     function colorFactory(color, bold) {
         if (color) {
             if (color.startsWith("#")) {
-                if (! bold) {
-                    return chalk.hex(color);
-                } else {
-                    return chalk.hex(color).bold;
-                }
-            } else if (! bold) {
-                return chalk[color];
-            } else {
-                return chalk[color].bold;
+                return chalk.hex(color);
+            } else  {
+                let c = colors[color];
+                if (!c) c = chalk(color);
+                if (c) return c;
             }
-        } else {
-            return t => { return t }
-        }
+        } 
+        return t => { return t }
     }
     
     let _r_once = false;
@@ -32,7 +28,7 @@
         function komponent(name, color, brackets) {
             brackets = brackets || "[]";
             let _m_n = name;
-            let _m_c = colorFactory(color, false);
+            let _m_c = colorFactory(color);
             let bracket_b = brackets.substr(Math.ceil(brackets.length / 2));
             let bracket_a = brackets.substr(0, Math.ceil(brackets.length / 2));
 
@@ -63,6 +59,7 @@
     module.exports = {
         komponent: factory().komponent,
         chalk,
+        colors,
         StopWatch,
         gradient,
         animation

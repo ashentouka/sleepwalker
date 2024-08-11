@@ -1,19 +1,24 @@
 {
-  "name": "wrapper",
+  "name": "@sleepwalker/wrapper",
   "main": "servo.js",
   "version": "1.0.2",
   "license": "ISC",
   "scripts": {
-    "clean": "rm -rf data node_modules *.log",
-    "start": "node servo.js >> wrapper.log &"
+    "preinstall": "cat ascii",
+    "refresh": "yarn add ../konsole && yarn add ../../horde",
+    "clean": "rm -rf data node_modules *.traineddata *.log *.pid ",
+    "start": "./wrapper.sh",
+    "go": "node servo.js"
   },
   "dependencies": {
-    "@sleepwalker/client-puppeteer": "../../clients/puppeteer/",
-    "@sleepwalker/client-simple": "../../clients/simple/",
+    "@sleepwalker/horde": "../../horde",
+    "@sleepwalker/konsole": "../konsole",
     "async": "^3.2.5",
     "cheerio": "^1.0.0-rc.12",
     "express": "^4.19.2",
     "node-schedule": "^2.1.1",
+    "puppeteer": "^22.11.0",
+    "tesseract.js": "^5.1.0",
     "unzip": "^0.1.11",
     "whatwg-url": "^14.0.0"
   },

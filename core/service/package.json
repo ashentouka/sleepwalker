@@ -1,17 +1,25 @@
 {
-  "name": "service",
+  "name": "@sleepwalker/service",
   "main": "servo.js",
   "version": "1.0.2",
   "license": "ISC",
   "scripts": {
-    "clean": "rm -rf node_modules *.log",
-    "start": "node service.js >> service.log &"
+    "preinstall": "cat ascii",
+    "clean": "rm -rf node_modules *.log *.pid",
+    "refresh": "yarn add ../disarray && yarn add ../konsole && yarn add ../../horde",
+    "start": "./service.sh",
+    "armada-start": "cd ../armada && node core/core.js > armada.log 2>&1",
+    "armada-cron": "cd ../armada && node core/core.js > armada.log 2>&1 &"
   },
   "dependencies": {
+    "@sleepwalker/disarray": "../disarray",
+    "@sleepwalker/horde": "../../horde",
+    "@sleepwalker/konsole": "../konsole",
     "@sleepwalker/proxy-armada": "../armada/",
-    "disarray": "https://github.com/ashentouka/disarray.git",
     "express": "^4.19.2",
     "express-static": "^1.2.6",
-    "node-schedule": "^2.1.1"
+    "express-ws": "^5.0.2",
+    "node-schedule": "^2.1.1",
+    "tail": "^2.2.6"
   }
 }

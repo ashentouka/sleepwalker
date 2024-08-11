@@ -2,16 +2,17 @@
     const async = require("async"),
         realip = require("./realip"),
         path = require("path"),
-        fs = require("fs")
+        fs = require("fs");
 
-     DisArray = require("disarray");
+    const DisArray = require("@sleepwalker/disarray");
 
-    const konsole = require("@sleepwalker/konsole").komponent("proxyarmada","red").komponent("proxytester","magentaBright");
+    const konsole = require("@sleepwalker/konsole").komponent("proxyarmada","red").komponent("proxytester","magenta");
 
-    const simple = require("@sleepwalker/client-simple");
-    const protocols = ["http", "socks4", "socks5"];
+    const datastore = require(path.resolve(__dirname + "/../../data/datasourcery"));
+    const { ipinfo, scamalytics } = require("@sleepwalker/horde");
+    const protocols = ["http", "https", "socks4", "socks5"];
 
-    let bl_interval, work_interval;
+    let work_interval;
 
     const iterate = (f,_fin) => {
         for (let prx = 0; prx < protocols.length; prx++) {
@@ -21,98 +22,90 @@
     }
 
     function start(proxproto,syserr) {
+        process.on('unhandledRejection', (reason, p) => {
+        }).on('uncaughtException', err => {
+        });
+
         return new Promise(resolve => {
 
             konsole.logger("starting proxytester.");
-            realip().then(real => {
-                konsole.logger(`real ip: ${real.query}`);
-                if (fs.existsSync(path.resolve(`${__dirname}/../data/working`))) fs.rmSync(path.resolve(`${__dirname}/../data/working`),{recursive:true});
+            realip({}).then(real => {
+                konsole.logger("real ip:", real.data.query);
+
                 const runstat_lib = require("./runstat"),
-                    asnlookup = require("../asn/asnlookup"),
-                    datastore = require("./datastore");
-
-/*                let bl_interval = setInterval(function (){
-                    datastore.blacklist.save(blacklist);
-                }, 30000)*/
-                let work_interval = setInterval(function(){
-                    datastore.working.save(working);
-                },10000)
-
-/*                let blacklist = (() => {
-                    let bl = datastore.blacklist;
-                    let socks4 = bl.socks4.loadCache();
-                    let socks5 = bl.socks5.loadCache();
-                    let http = bl.http.loadCache();
-                    return {
-                        socks5,
-                        socks4,
-                        http
-                    }
-                })();*/
+                    asnlookup = require("../asn/asnlookup");
 
                 let working = (() => {
-                    let socks4 = [], socks5 = [], http = [];
+                    let socks4 = [], socks5 = [], http = [], https = [];
                     return {
-                        socks4, socks5, http
+                        socks4, socks5, http, https
                     }
                 })();
 
-                fs.mkdirSync(path.resolve(`${__dirname}/../data/working/location`), {recursive: true});
                 let runstat = runstat_lib(proxproto.totalunique, working);
                 let proxytester = async.queue((task, callback) => {
-                    let withprotocol = `${task.protocol}://${task.uri}`;
-              /*      if (blacklist[task.protocol] && blacklist[task.protocol].includes(task.uri)) {
-                        runstat.bad();
-                        callback();
-                    } else {*/
-                        simple.ipinfo(withprotocol).then(d=>{
-                                if (d.query === real.query) {
-                                    //blacklist[task.protocol].push(task.uri);
-                                    runstat.bad();
-                                    callback();
-                                } else {
-                                    try {
-                                        working[task.protocol].push(task.uri);
-                                        let asndata = asnlookup.asndata(task.uri);
-                                        let asntype = (!asndata || !asndata.asn || !asndata.asn.residential) ? "other" : "residential";
-                                        if (d.countryCode) {
-                                            if (["US", "GB", "CA"].includes(d.countryCode)) {
-                                                fs.appendFileSync(path.resolve(`${__dirname}/../data/working/location/${d.countryCode}-${d.regionName}-${asntype}.txt`), `${withprotocol}\n`)
-                                            } else {
-                                                fs.appendFileSync(path.resolve(`${__dirname}/../data/working/location/${d.countryCode}-${asntype}.txt`), `${withprotocol}\n`)
-                                            }
-                                        }
-                                        runstat.good()
-                                        callback();
-                                    } catch (e) {
-                                      //..12  blacklist[task.protocol].push(task.uri);
-                                        runstat.bad()
-                                        callback();
-                                    }
-                            }
-                    
-                    }).catch(function(){
-                        blacklist[task.protocol].push(task.uri);
-                                runstat.bad()
+                    let proxy = `${task.protocol}://${task.uri}`;
+
+                    let cancelled = false;
+                    let callbacked = false;
+
+                    let cancellor = setTimeout(function() {
+                        cancelled = true;
+                        runstat.bad()
+                        if (!callbacked) {
+                            callbacked = true;
+                            callback();
+                        }
+                    }, 90000);
+
+                    function result(type){
+                        if (!cancelled) {
+                            clearTimeout(cancellor);
+                            runstat[type]()
+                            if (!callbacked) {
+                                callbacked = true;
                                 callback();
+                            }
+                        }
+                    }
+
+                    ipinfo({ proxy, timeout: 5000 }).then(response=>{
+                        if (response.data.query === real.data.query) {
+                            result("bad");
+                        } else {
+                            try {
+                                let asndata = asnlookup.asndata(task.uri);
+                                let residential = asndata?.asn?.residential;
+
+                                datastore.saveProxy({ protocol: task.protocol, proxy: task.uri, country: response.data.countryCode, state: response.data.regionName, residential: residential ? 1 : 0 })
+                                scamalytics({ ip: task.uri.replace(/:\d{2,5}/, ""), timeout: 18000 }).then(score=>{
+                                    datastore.saveScore({ proxy: task.uri, score })
+                                    working[task.protocol].push(task.uri);
+                                    result("good");
+
+                                }).catch(function(ex){
+                                    result("bad");
+                                    
+                                })
+                            } catch (e) {
+                                result("bad");
+                            }
+                        }
+                    }).catch(function(ex){
+                        result("bad");
                     });
-                // }
-                }, 750);
+                }, 1000);
 
                 iterate(type => {
                     for (let pridx = 0; pridx < proxproto[type].length; pridx++) {
                         proxytester.push({uri: proxproto[type][pridx], protocol: type});
                     }
                 }, function () {
-                    proxytester.drain(function () {
-                     //   clearInterval(bl_interval);
-                        clearInterval(work_interval);
-                        datastore.working.save(working);
-                       // datastore.blacklist.save(blacklist);
+                    proxytester.drain(async function () {
                         runstat.stop();
-                        datastore.finished().then(() => {
-                            resolve(working);
-                        });
+                        datastore.promote();
+                        await datastore.export();
+                        resolve();
                     });
                 });
             }).catch(e => {
@@ -120,7 +113,7 @@
                 syserr("realip")(e);
                 resolve();
             });
-            }
-
+        });
+    }
     module.exports = start
 }

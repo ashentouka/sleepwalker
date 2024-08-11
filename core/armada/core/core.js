@@ -1,10 +1,13 @@
 {
     
-    const { StopWatch, komponent } = require("@sleepwalker/konsole");
-    const SegfaultHandler = require('segfault-handler');
-        SegfaultHandler.registerHandler('crash.log');
+    const { StopWatch, gradient, komponent } = require("@sleepwalker/konsole");
     
     let log = komponent("proxyarmada","red");
+
+    const fs = require("fs");
+    const path = require("path");
+    const ascii = fs.readFileSync(path.resolve(__dirname + "/../ascii"));
+    console.log(gradient.vice(ascii));
 
     function catcher(msg){
         return function (e){
@@ -16,8 +19,6 @@
     function start() {
         return new Promise(resolve => {
             const syserr = (comp => { return catcher("core system failure in: " + comp)});
-
-            log.logger("time to assemble the armada!");
 
             const importer = require("./importer");
             importer().then(proxproto => {

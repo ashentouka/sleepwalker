@@ -1,63 +1,118 @@
 {
   const path = require("path");
-    const fs = require("fs");
+  const fs = require("fs");
+  
+  const fnfile = __dirname + "/filenum.json";
+  const impath = path.resolve(__dirname + `/../data/import/`);
+  
+  function savefnfile(fndata){
+    fs.writeFileSync(fnfile, JSON.stringify(fndata));
+  }
+
+  let filenumbers = (function(){
+    if (!fs.existsSync(impath)) fs.mkdirSync(impath, { recursive: true });
+    if (fs.existsSync(fnfile)){
+      return require(fnfile);
+    } else {
+      let fn = { http: 0, https: 0, socks4: 0, socks5: 0 };
+      savefnfile(fn);
+      return fn;
+    }
+  })();
 
   function startExpress(){
-    const express = port=>{
+     const express = port=>{
+        const data = require("../data/datasourcery")
         const express = require('express');
         const path = require("path");
         const app = express();
+        require('express-ws')(app);
 
         app.use("/", express.static(path.join(__dirname, "static"))); 
+        app.ws('/logs', function(ws, req) {
+          ws.on('message', function(msg) {
+            let wdata = JSON.parse(msg);
+
+            if (wdata.action === "tail") {
+                const { Tail } = require('tail');
+                const logfile = new Tail(path.join(__dirname, wdata.log === "armada" ? "/../armada/armada.log" : "/../wrapper/wrapper.log" ), 
+                    { nLines: 10000 });
+                logfile.on("line", function(data) {
+                  ws.send(data);
+                });
+            }
+          });
+        });
+
+        app.get('/proxies', (req, res) => {
+            const output = data.getProxy(req.query);
+            res.set('Content-Type', 'text/plain');
+            res.send(output.join("\n"));
+        });
+        app.post('/impport/:proto', (req,res) => {
+          try {
+            filenumbers[req.params["proto"]]++;
+            savefnfile(filenumbers);
+            let fpath = path.resolve(`${impath}${req.params["proto"]}-${filenumbers[req.params["proto"]]}.txt`);
+            let fbody = req.body;
+            fs.writeFileSync(fpath, fbody);
+            res.status(200)
+          } catch(e) {
+            res.status(500);
+            res.send(e.message);
+          }
+        })
+        app.get('/proxies/:proto.txt', (req, res) => {
+            const output = data.getProxyList(req.params["proto"]);
+            res.set('Content-Type', 'text/plain')
+            res.send(output.join("\n"));
+        });
+        app.ws('/info', function(ws, req) {
+            ws.send(JSON.stringify(summary));
+            listeners.push(ws);
+
+            ws.on('close', function() {
+                if (listeners.length === 1) {
+                    listeners = [];
+                } else {
+                    const index = listeners.indexOf(ws);
+                    if (index > -1) {
+                        listeners.splice(index, 1);
+                    }
+                }
+            });
+        });
+
         app.listen(port, () => console.log(`Started Express: http://localhost:${port}/`));
+
+        info(data);
     }
 
     express(6660);
   }
 
-  function copyLatest(){
-    let descriptor = {
-      timestamp: new Date().toJSON(),
-      all: 0
-    };
-    function copyFile(type){
-      const serve_path = path.resolve(__dirname + `/static/${type}.txt`);
-      const export_path = path.resolve(`../armada/data/export/${type}.txt`);
-      if (fs.existsSync(export_path)){
-        if (fs.existsSync(serve_path)) fs.rmSync(serve_path);
-        const text = fs.readFileSync(export_path, "utf-8");
-        const lines = text.trim().split(/\r?\n/);
-        for (let idx in lines){
-          output.push(`${type}://${lines[idx]}`);
+  function info(data){
+    summary = data.getSummary();
+    setInterval(function() {
+        let output = data.getSummary();
+        if (output.timestamp !== summary.timestamp) {
+            summary = output;
+            for (const ws of listeners) {
+                ws.send(JSON.stringify(summary));
+            }
         }
-        descriptor[type] = lines.length;
-        descriptor.all += lines.length;
-        fs.writeFileSync(serve_path, text, "utf-8");
-      }
-    }
-
-    let output=[];
-    copyFile("http");
-    copyFile("socks4");
-    copyFile("socks5");
-
-    const DisArray = require("disarray");
-    output = new DisArray().concat(output);
-    fs.writeFileSync(path.resolve(__dirname + `/static/all.txt`), output.join("\n"), "utf-8");
-    fs.writeFileSync(path.resolve(__dirname + `/static/info.json`), JSON.stringify(descriptor, null, 2), "utf-8");
-
-    console.log("Successful Copy of Latest Tested Proxies from [/armada/data/export/] to [/service/static/]");
+    }, 15000);
   }
 
-  function runArmada(){
-    // fs.rmSync(path.resolve("../armada/data/blacklist/"), { recursive: true, force: true});
-    const armada = require("../armada/core/core");
-    let promise = armada();
-    promise.then(function(){
-      console.log("Finished gathering and testing new proxy.");
-      copyLatest();
-    })
-    return promise;
+  function runArmada(mode){
+    return new Promise(resolve=>{
+      const { spawn } = require("node:child_process");
+      let yarn = spawn("yarn", [`armada-${mode}`]);
+      yarn.on('close', (code) => {
+        console.log(`armada: exited, code ${code}`);
+        resolve();
+      });
+    }) 
   }
 
   function setupCron(){
@@ -65,20 +120,16 @@
     const job = schedule.scheduleJob("*/30 * * * *", function(){ 
       console.log(new Date().toJSON(), "Armada scheduled run started.")
 
-      runArmada().then(function(){
+      runArmada("cron").then(function(){
         console.log(new Date().toJSON(), "Armada scheduled run completed.")
       })
     })
     console.log("Scheduled armada to provide fresh proxy hourly.");
   }
 
+  let listeners = [];
+  let summary = {};
 
-  // Startup
-  // Sequence
-  copyLatest();
   startExpress();
-  runArmada()
-    .then(setupCron);
-  //\\
-  ////
+  runArmada("start").then(setupCron);
 }

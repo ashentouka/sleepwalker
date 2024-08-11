@@ -1,31 +1,59 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en" style="height: 100%">
 <head>
-	<title>Proxy Armada: HTTP/SOCkS4/5 proxies | 5s Response Time</title>
-	<script type="text/javascript">
-		fetch("info.json").then(info=>{
-			info.json().then(data=>{
-
-			})
-		});
-	</script>
+	<title>Proxy Armada: HTTP/S SOCkS4/5</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" 
+	integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="index.js"></script>
+	<link rel="stylesheet" href="index.css" />
 </head>
 <body>
-	<h3>Proxy Armada</h3>
-	<p><strong>HTTP/SOCkS4/5</strong> proxies<br/>
-		5s Response Times<br/>
-		List compiled and Proxies tested <strong>Every Hour</strong>.
-		<div id="ts"></div>
-	</p>
-	<ul>
-		<li>--==||==-- --==||==--</li>
-		<li><span id="http"></span><a href="http.txt">HTTP/S</a></li>
-		<li><span id="socks4"></span><a href="socks4.txt">SOCKS4</a></li>
-		<li><span id="socks5"></span><a href="socks5.txt">SOCKS5</a></li>
-		<li>--==||==-- --==||==--</li>
-		<li><span id="all"></span><a href="all.txt">ALL</a></li>
-		<li>--==||==-- --==||==--</li>
-	</ul>
+	<div class="container-fluid">
 
+		<div id="proxbox" style="z-index: 100; position: absolute;">
+			<div class="card" style="width: 40rem;">
+				<h3 class="card-header" style="width: 100">Proxy Armada</h3>
+			  <div class="card-body">
+			    <p class="card-text">Scrapes thousands of <strong>HTTP/S SOCkS4/5</strong> proxies<br/>
+			    	Results tested for 5s Response Times<br/>
+					Fresh list compiled <strong>every 30 minutes</strong>.</p>
+			  </div>
+			  <ul class="list-group list-group-flush">
+			    <li class="list-group-item">
+			    	<a href="proxies/http.txt"><div class="btn btn-primary" style="display: inline;" id="http">HTTP</div></a>
+			    	<a href="proxies/https.txt"><div class="btn btn-secondary" style="display: inline;" id="https">HTTPS</div></a>
+			    	<a href="proxies/socks4.txt"><div class="btn btn-success" style="display: inline;" id="socks4">SOCKS4</div></a>
+			    	<a href="proxies/socks5.txt"><div class="btn btn-info" style="display: inline;" id="socks5">SOCKS5</div></a>
+			    </li>
+			  </ul>
+			  <div class="card-body">
+			    <a href="all.txt"><div class="btn btn-outline-primary" style="display: inline;" id="all">All</div></a>
+			  </div>
+			  <div class="card-footer">
+			  	<div class="row">
+			    	<div class="col-sm-7"><small class="text-body-secondary">Last updated <span class="lastUpdateMinutes"></span> mins ago.</small></div>
+			    	<div class="col-sm-5 text-end">
+			    		<span id="import">IMPORT</span>
+			    	</div>
+				</div>
+			  </div>
+			</div>
+		</div>
+
+		<div class="row">	
+			<div id="armada" class="tailor col-sm-7 vt323-regular" style="color: aquamarine; font-size: 0.9rem;">
+				<pre></pre>
+			</div>
+			<div id="wrapper" class="tailor col-sm-5 vt323-regular overflow-x-hidden" style="color: darkorchid; font-size: 0.9rem;">
+				<pre></pre>
+			</div>
+		</div>
+
+		<div class="overlay"></div>	
+	</div>
 </body>
 </html>

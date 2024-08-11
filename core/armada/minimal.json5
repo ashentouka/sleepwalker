@@ -2,7 +2,7 @@
   {
     "type": "proxywrapper",
     "env": {
-      "development": "http://localhost:7769",
+      "development": "http://localhost:8769",
       "production": "http://proxy-ws.herokuapp.com",
       "use": "development"
     },

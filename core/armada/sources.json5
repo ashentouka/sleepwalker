@@ -2,12 +2,12 @@
   {
     "type": "proxywrapper",
     "env": {
-      "development": "http://localhost:6669",
+      "development": "http://localhost:8769",
       "production": "http://proxy-ws.herokuapp.com",
       "use": "development"
     },
     "endpoints": [
-      { "http": "/http/proxynova.com" },
+     // { "http": "/http/proxynova.com" },
       { "http": "/http/free-proxy-list.net" },
       { "http": "/http/iplocation.net" },
       { "http": "/http/openproxy.space" },
@@ -211,7 +211,7 @@
   {
     "site": "http://hack-hack.chat.ru/",
     "http": "proxy/p3.txt",
-    "http": "proxy/p4.txt"
+    "https": "proxy/p4.txt"
   }
 
   /*  {

@@ -1,8 +1,4 @@
 {
-    function start() {
-            const simple = require("@sleepwalker/client-simple");
-            const ipinfo = simple.ipinfo();
-            return (ipinfo);
-    }
-    module.exports = start
+    const { ipinfo } = require("@sleepwalker/horde");
+    module.exports = ipinfo;
 }
