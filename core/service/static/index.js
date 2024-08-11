@@ -28,10 +28,10 @@
 		},250);
 	})()
 
-	let imbn = document.getElementById("import");
+/*	let imbn = document.getElementById("import");
 	imbn.addEventListener("click", () => {
-		let divvy = document.create
-	});
+		let divvy = document.createElement("div")
+	});*/
 
 	function resetcenter() {
 		let ele = document.querySelector("#proxbox");

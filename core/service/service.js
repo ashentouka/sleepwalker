@@ -49,7 +49,20 @@
             res.set('Content-Type', 'text/plain');
             res.send(output.join("\n"));
         });
-        app.post('/impport/:proto', (req,res) => {
+        
+        app.use(function(req, res, next){
+          if (req.is('text/*')) {
+            req.text = '';
+            req.setEncoding('utf8');
+            req.on('data', function(chunk){ req.text += chunk });
+            req.on('end', next);
+          } else {
+            next();
+          }
+        });
+
+        app.use(require("./plaintext"));
+        app.post('/import/:proto', (req,res) => {
           try {
             filenumbers[req.params["proto"]]++;
             savefnfile(filenumbers);
@@ -62,11 +75,13 @@
             res.send(e.message);
           }
         })
+        
         app.get('/proxies/:proto.txt', (req, res) => {
             const output = data.getProxyList(req.params["proto"]);
             res.set('Content-Type', 'text/plain')
             res.send(output.join("\n"));
         });
+
         app.ws('/info', function(ws, req) {
             ws.send(JSON.stringify(summary));
             listeners.push(ws);
@@ -84,7 +99,6 @@
         });
 
         app.listen(port, () => console.log(`Started Express: http://localhost:${port}/`));
-
         info(data);
     }
 
