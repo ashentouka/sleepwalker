@@ -19,8 +19,7 @@
     "node-schedule": "^2.1.1",
     "puppeteer": "^22.11.0",
     "tesseract.js": "^5.1.0",
-    "unzip": "^0.1.11",
-    "whatwg-url": "^14.0.0"
+    "unzip": "^0.1.11"
   },
   "resolutions": {
     "graceful-fs": "^4.2.11"

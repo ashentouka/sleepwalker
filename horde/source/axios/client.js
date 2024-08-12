@@ -1,4 +1,5 @@
 {
+    require("../util/sys");
 
     const useragent = require("user-agent-stealth");
     const ProxyAgent = require("simple-proxy-agent");

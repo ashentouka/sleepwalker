@@ -4,14 +4,18 @@
   "main": "source/index.js",
   "license": "MIT",
   "scripts": {
-    "preinstall": "cat ascii && yarn chrome && yarn setup-xtra-escapecha && yarn setup-xtra-proxy && yarn setup-xtra-viewport",
+    "preinstall": "cat ascii && yarn chrome && yarn setup-xtra-escapecha && yarn setup-xtra-proxy && yarn setup-xtra-referer && yarn setup-xtra-scriptinjector && yarn setup-xtra-viewport",
     "chrome": "npx puppeteer browsers install chrome -y",
-    "clean": "rm -rf node_modules && rm -rf ~/.cache/puppeteer/chrome && yarn clean-xtra-escapecha && yarn clean-xtra-proxy && yarn clean-xtra-viewport",
+    "clean": "rm -rf node_modules && rm -rf ~/.cache/puppeteer/chrome && yarn clean-xtra-escapecha && yarn clean-xtra-proxy && yarn clean-xtra-referer && yarn clean-xtra-scriptinjector && yarn clean-xtra-viewport",
     "clean-xtra-escapecha": "cd xtra/escapecha && yarn clean",
     "clean-xtra-proxy": "cd xtra/proxy-provider && yarn clean",
+    "clean-xtra-referer": "cd xtra/referer && yarn clean",
+    "clean-xtra-scriptinjector": "cd xtra/scriptinjector && yarn clean",
     "clean-xtra-viewport": "cd xtra/viewport && yarn clean",
     "setup-xtra-escapecha": "cd xtra/escapecha && yarn",
     "setup-xtra-proxy": "cd xtra/proxy-provider && yarn",
+    "setup-xtra-referer": "cd xtra/referer && yarn",
+    "setup-xtra-scriptinjector": "cd xtra/scriptinjector && yarn",
     "setup-xtra-viewport": "cd xtra/viewport && yarn"
   },
   "dependencies": {

@@ -1,5 +1,5 @@
 {
-    require("./util/monkeylogpatcher");
+    require("./util/sys");
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     
     const { cluster, simple, session, ipinfo, scamalytics } = require("./axios/client");
@@ -17,8 +17,5 @@
         ftps,
         ftp
     }
-    
-    const SegfaultHandler = require('segfault-handler');
-    SegfaultHandler.registerHandler('crash.log');
 
 }

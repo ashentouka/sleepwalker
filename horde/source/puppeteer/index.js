@@ -1,6 +1,6 @@
 {
-    function init ({ threads, concurrency, block, mobile = false, referer, fingerprint, extension, debug }) {
-        const catcher = require("../util/catcher")(debug);
+    require("../util/sys");
+    function init ({ threads, concurrency, block, mobile = false, referer, fingerprint, userdata, extension, debug }) {
         const puppeteer = require('puppeteer-extra').addExtra(require('puppeteer'));
         const { Cluster } = require('puppeteer-cluster');
         const Xvfb =  require('xvfb');
@@ -20,6 +20,7 @@
             }
         })();
 
+        //puppeteer.use(require("../../xtra/scriptinjector")({ debug }));
         puppeteer.use(require("../../xtra/viewport")({ debug, mobile }));
         //puppeteer.use(require('puppeteer-extra-plugin-stealth')());
         puppeteer.use(require("../../xtra/proxy-provider")());
@@ -66,19 +67,19 @@
             return true
         }
         
-        let EXTENSION_PATH = path.join(__dirname + "/extension");
+        let EXTENSION_PATH = extension || path.join(__dirname + "/extension");
 
         let args=[ 
             "--no-sandbox",
             '--disable-setuid-sandbox', 
             '--disable-blink-features=AutomationControlled', 
             '--window-size=1920,1080'];
-        if (extension){
-            EXTENSION_PATH = extension;
+        if (!userdata){
+            args.push(`--disable-extensions-except=${EXTENSION_PATH}`)
+            args.push(`--load-extension=${EXTENSION_PATH}`)
+        } else {
+            args.push(`--user-data-dir=${userdata}`)
         }
-        args.push(`--disable-extensions-except=${EXTENSION_PATH}`)
-        args.push(`--load-extension=${EXTENSION_PATH}`)
-        
 
         if (debug) console.log(args);
 

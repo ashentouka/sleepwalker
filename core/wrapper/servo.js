@@ -94,13 +94,11 @@
             })
         })();*/
 
-        const scraper = (function hordeScraperFactory(){
-            const { puppeteer } = require("@sleepwalker/horde");
-            return puppeteer({
-                block: { ads: true, trackers: true, resources: true },
-                threads: THREADS.PUPPETEER
-            })
-        })();
+        const { puppeteer, simple } = require("@sleepwalker/horde");
+        const scraper = puppeteer({
+            block: { ads: true, trackers: true, resources: true },
+            threads: THREADS.PUPPETEER
+        })
 
         function result_rest_endpoint(output){
             let resturi = `/${output.protocol.toLowerCase()}/${new URL(output.url).host.replace(/^www./, "")}`
@@ -179,7 +177,9 @@
                         setTimeout(function(){
                             konsole.logger("[2/2]. preload complete.");
                             endpoints.finished = true;
-                            resolve();
+                            simple({ url: "http://localhost:6660/signal" }).then(function(){
+                                resolve();
+                            })
                         },2000);
                     })
                 })

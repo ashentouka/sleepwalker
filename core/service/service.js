@@ -74,6 +74,11 @@
             res.send(output.join("\n"));
         });
 
+        app.get("/signal", (req,res) => {
+           console.log("proxy wrapper service started/cache loading completed... armada can start");
+           runArmada();
+        });
+
         app.ws('/info', function(ws, req) {
             ws.send(JSON.stringify(summary));
             listeners.push(ws);
@@ -110,32 +115,61 @@
     }, 15000);
   }
 
-  function runArmada(mode){
-    return new Promise(resolve=>{
-      const { spawn } = require("node:child_process");
-      let yarn = spawn("yarn", [`armada-${mode}`]);
-      yarn.on('close', (code) => {
-        console.log(`armada: exited, code ${code}`);
-        resolve();
-      });
+  
+  const component = require("./svcontrols");
+  
+  async function startWrapper(){
+    const wrapper = component("wrapper");
+    await wrapper.start(true);
+  }
+
+  async function checkWrapper(){
+    const wrapper = component("wrapper");
+    const status = await wrapper.running();
+    if (status.length === 1) {
+      await runArmada();
+    } else {
+      await startWrapper();
+    }
+  }
+
+  async function runArmada(){
+    return new Promise(async resolve=>{
+      const armada = component("armada");
+      const status = await armada.running();
+      if (status.length > 1) {
+        console.log("armada multi-instance conflict, will kill all and restart");
+      } else if (status.length === 0) {
+        console.log("armada not running: will start");
+      } else if (status.length === 1) {
+        if (lasttime && lasttime === status[0]) {
+          console.log("same armada process still running since > 30+ mins ago, will restart it");
+          lasttime = null;
+        } else {
+          lasttime = status[0];
+          resolve();
+          return
+        }
+      }
+      await armada.start(true);
+      resolve();
     }) 
   }
 
-  function setupCron(){
+  async function setupCron(){
     const schedule = require("node-schedule");
     const job = schedule.scheduleJob("*/30 * * * *", function(){ 
       console.log(new Date().toJSON(), "Armada scheduled run started.")
-
-      runArmada("cron").then(function(){
-        console.log(new Date().toJSON(), "Armada scheduled run completed.")
-      })
+      checkWrapper();
     })
-    console.log("Scheduled armada to provide fresh proxy hourly.");
+    console.log("Scheduled armada to provide fresh proxy 2x hourly.");
   }
 
   let listeners = [];
   let summary = {};
+  let lasttime;
 
   startExpress();
-  runArmada("start").then(setupCron);
+  startWrapper();
+  setupCron();
 }

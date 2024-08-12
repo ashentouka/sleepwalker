@@ -7,9 +7,7 @@
     "preinstall": "cat ascii",
     "clean": "rm -rf node_modules *.log *.pid",
     "refresh": "yarn add ../disarray && yarn add ../konsole && yarn add ../../horde",
-    "start": "./service.sh",
-    "armada-start": "cd ../armada && node core/core.js > armada.log 2>&1",
-    "armada-cron": "cd ../armada && node core/core.js > armada.log 2>&1 &"
+    "start": "node starter.js"
   },
   "dependencies": {
     "@sleepwalker/disarray": "../disarray",

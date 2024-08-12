@@ -4,4 +4,4 @@ cd $MY_PATH
 touch ../armada/armada.log
 touch ../wrapper/wrapper.log
 node service.js > service.log 2>&1 &
-echo "$!" > "sevice.pid"
+echo "$!" > "service.pid"

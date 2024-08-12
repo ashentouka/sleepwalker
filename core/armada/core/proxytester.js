@@ -56,7 +56,7 @@
                             callbacked = true;
                             callback();
                         }
-                    }, 90000);
+                    }, 60000);
 
                     function result(type){
                         if (!cancelled) {
@@ -69,31 +69,47 @@
                         }
                     }
 
-                    ipinfo({ proxy, timeout: 5000 }).then(response=>{
-                        if (response.data.query === real.data.query) {
-                            result("bad");
-                        } else {
-                            try {
-                                let asndata = asnlookup.asndata(task.uri);
-                                let residential = asndata?.asn?.residential;
+                    (function thetest(){
+                        let x2 = false;
 
-                                datastore.saveProxy({ protocol: task.protocol, proxy: task.uri, country: response.data.countryCode, state: response.data.regionName, residential: residential ? 1 : 0 })
-                                scamalytics({ ip: task.uri.replace(/:\d{2,5}/, ""), timeout: 18000 }).then(score=>{
-                                    datastore.saveScore({ proxy: task.uri, score })
-                                    working[task.protocol].push(task.uri);
-                                    result("good");
+                        function doOver(){
+                            if (/https?/.test(task.protocol) && !x2){
+                                task.protocol = (task.protocol === "http") ? "https" : "http";
+                                proxy = `${task.protocol}://${task.uri}`;
+                                x2 = true;
+                                thetest();
 
-                                }).catch(function(ex){
-                                    result("bad");
-                                    
-                                })
-                            } catch (e) {
-                                result("bad");
+                                return true;
+                            } else {
+                                return false;
                             }
                         }
-                    }).catch(function(ex){
-                        result("bad");
-                    });
+
+                        ipinfo({ proxy, timeout: 7500 }).then(response=>{
+                            if (response.data.query === real.data.query) {
+                                result("bad");
+                            } else {
+                                try {
+                                    let asndata = asnlookup.asndata(task.uri);
+                                    let residential = asndata?.asn?.residential;
+
+                                    datastore.saveProxy({ protocol: task.protocol, proxy: task.uri, country: response.data.countryCode, state: response.data.regionName, residential: residential ? 1 : 0 })
+                                    scamalytics({ ip: task.uri.replace(/:\d{2,5}/, ""), timeout: 20000 }).then(score=>{
+                                        datastore.saveScore({ proxy: task.uri, score })
+                                        working[task.protocol].push(task.uri);
+                                        result(x2?"x2":"good");
+
+                                    }).catch(function(ex){
+                                        if (!doOver()) result("bad");
+                                    })
+                                } catch (e) {
+                                    if (!doOver()) result("bad");
+                                }
+                            }
+                        }).catch(function(ex){
+                            if (!doOver()) result("bad");
+                        });
+                    })();
                 }, 1000);
 
                 iterate(type => {
