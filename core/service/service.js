@@ -39,7 +39,7 @@
 
             if (wdata.action === "tail") {
                 const { Tail } = require('tail');
-                const logfile = new Tail(path.join(__dirname, wdata.log === "armada" ? slogs+"armada.log" : slogs+"wrapper.log" ), 
+                const logfile = new Tail((wdata.log === "armada" ? slogs+"armada.log" : slogs+"wrapper.log" ), 
                     { nLines: 10000 });
                 logfile.on("line", function(data) {
                   ws.send(data);
