@@ -1,10 +1,13 @@
 {
   const path = require("path");
   const fs = require("fs");
+  const os = require("os");
   
-  const fnfile = __dirname + "/filenum.json";
-  const impath = path.resolve(__dirname + `/../data/import/`);
-  
+
+  const impath = os.homedir()+"/.sleepwalker/import/";
+  const fnfile = os.homedir()+"/.sleepwalker/filenum.json";
+  const slogs = os.homedir()+"/.sleepwalker/";
+
   function savefnfile(fndata){
     fs.writeFileSync(fnfile, JSON.stringify(fndata));
   }
@@ -36,7 +39,7 @@
 
             if (wdata.action === "tail") {
                 const { Tail } = require('tail');
-                const logfile = new Tail(path.join(__dirname, wdata.log === "armada" ? "/../armada/armada.log" : "/../wrapper/wrapper.log" ), 
+                const logfile = new Tail(path.join(__dirname, wdata.log === "armada" ? slogs+"armada.log" : slogs+"wrapper.log" ), 
                     { nLines: 10000 });
                 logfile.on("line", function(data) {
                   ws.send(data);

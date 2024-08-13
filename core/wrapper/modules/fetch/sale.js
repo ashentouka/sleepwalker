@@ -5,9 +5,10 @@
     const scheduler = Tesseract.createScheduler();
     const path = require("path");
     const fs = require("fs");
+    const os = require("os");
 
     const TESSERACT_WORKERS = 5;
-    const cachefile = path.resolve(__dirname+"/../../data/tesseract.json");
+    const cachefile = os.homedir()+"/.sleepwalker/proxysale.tesseract.json";
 
     const SITE = "https://free.proxy-sale.com";
 

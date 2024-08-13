@@ -9,6 +9,7 @@
     const konsole = require("@sleepwalker/konsole").komponent("proxyarmada","red").komponent("proxytester","magenta");
 
     const datastore = require(path.resolve(__dirname + "/../../data/datasourcery"));
+    const konf = require(path.resolve(__dirname + "/../../data/konf"))("proxytester");
     const { ipinfo, scamalytics } = require("@sleepwalker/horde");
     const protocols = ["http", "https", "socks4", "socks5"];
 
@@ -56,7 +57,7 @@
                             callbacked = true;
                             callback();
                         }
-                    }, 60000);
+                    }, konf.cancelafter);
 
                     function result(type){
                         if (!cancelled) {
@@ -69,10 +70,12 @@
                         }
                     }
 
+                    let x2 = false;
+
                     (function thetest(){
-                        let x2 = false;
 
                         function doOver(){
+                            if (!konf.httpsretest) return false;
                             if (/https?/.test(task.protocol) && !x2){
                                 task.protocol = (task.protocol === "http") ? "https" : "http";
                                 proxy = `${task.protocol}://${task.uri}`;
@@ -85,7 +88,7 @@
                             }
                         }
 
-                        ipinfo({ proxy, timeout: 7500 }).then(response=>{
+                        ipinfo({ proxy, timeout: konf.timeout }).then(response=>{
                             if (response.data.query === real.data.query) {
                                 result("bad");
                             } else {
@@ -93,24 +96,28 @@
                                     let asndata = asnlookup.asndata(task.uri);
                                     let residential = asndata?.asn?.residential;
 
-                                    datastore.saveProxy({ protocol: task.protocol, proxy: task.uri, country: response.data.countryCode, state: response.data.regionName, residential: residential ? 1 : 0 })
-                                    scamalytics({ ip: task.uri.replace(/:\d{2,5}/, ""), timeout: 20000 }).then(score=>{
+                                    datastore.saveProxy({ protocol: task.protocol, proxy: task.uri, country: response.data.countryCode,
+                                     state: response.data.regionName, residential: residential ? 1 : 0 })
+                                    scamalytics({ ip: task.uri.replace(/:\d{2,5}/, ""), timeout: konf.scamalytics }).then(score=>{
                                         datastore.saveScore({ proxy: task.uri, score })
                                         working[task.protocol].push(task.uri);
                                         result(x2?"x2":"good");
 
                                     }).catch(function(ex){
+                            //console.log(ex.message)
                                         if (!doOver()) result("bad");
                                     })
-                                } catch (e) {
+                                } catch (ex) {
+                            //console.log(ex.message)
                                     if (!doOver()) result("bad");
                                 }
                             }
                         }).catch(function(ex){
+                            //console.log(ex.message)
                             if (!doOver()) result("bad");
                         });
                     })();
-                }, 1000);
+                }, konf.threads);
 
                 iterate(type => {
                     for (let pridx = 0; pridx < proxproto[type].length; pridx++) {

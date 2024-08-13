@@ -2,9 +2,10 @@
 	const DisArray = require("@sleepwalker/disarray");
 	const path = require("path");
 	const fs = require("fs");
-
-	const dir_exp = path.join(__dirname, "/export/");
-	const dir_data = path.join(__dirname, "/db/");
+	const os = require("os");
+	
+	const dir_data = os.homedir()+"/.sleepwalker/";
+	const dir_exp = (dir_data+ "/export/");
 	const file_db = path.join(dir_data, "armada.db");
 	const Database = require('better-sqlite3');
 

@@ -5,9 +5,10 @@
 
     let startup = new Promise(resolve=>{
         const express = require('express'),
-            path = require("path"),
             fs = require("fs"),
-            async = require("async");
+            path = require("path"),
+            async = require("async"),
+            os = require("os");
 
         const m_puppeteer = {
     //  m_experte: require("./modules/puppeteer/experte"),
@@ -41,7 +42,7 @@
         console.log(gradient.teen(ascii));
 
         const app = express();
-        app.use("/", express.static(path.join(__dirname, "www")));
+        //app.use("/", express.static(path.join(__dirname, "www")));
 
         function composeArray(arr) {
             let text = "";

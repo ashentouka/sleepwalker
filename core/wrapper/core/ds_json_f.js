@@ -1,6 +1,7 @@
 {
     const path = require("path"),
-        fs = require("fs");
+        fs = require("fs"),
+        os = require("os");
 
     const json_f = function (json_path, default_data) {
         return {
@@ -22,7 +23,7 @@
 
     let dfs = {};
 
-    let data_dir = path.join(path.resolve(__dirname + "/../"), `data/`);
+    let data_dir = os.homedir()+"/.sleepwalker/proxywrapper/";
 
 
     function loadCache(url){

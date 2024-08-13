@@ -40,6 +40,7 @@ function component(name){
         })
       },
       async start(restart=true){
+        console.log(name,"start()");
         return new Promise(async resolve=>{
           if (restart) await API.stop();
           const { exec } = require("node:child_process");
@@ -49,6 +50,7 @@ function component(name){
         })
       },
       async stop(){
+        console.log(name,"stop()");
         return new Promise(async resolve=>{
           const pids = await API.running();
           for (pid of pids) {

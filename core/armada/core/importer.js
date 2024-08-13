@@ -29,13 +29,15 @@
         
         const { chalk, komponent, gradient } = require("@sleepwalker/konsole");
         const klog = komponent("proxyarmada", "red").komponent("importer", "cyan");
-
         require('require-json5');
         const source_fn = minimal ? "../minimal.json5" : "../sources.json5";
         const sources = require(source_fn);
         const fs = require("fs");
         const path = require("path");
-        const async = require("async")
+        const async = require("async");
+        const os = require("os");
+
+        const konf = require(path.resolve(__dirname + "/../../data/konf"))("importer");
 
         const protocols = ["http", "https", "socks4", "socks5"];
         const ip_port_regex = /(?:(\w+)(?::(\w*))@)?([a-zA-Z0-9][a-zA-Z0-9-_]{0,61}[a-zA-Z0-9]{0,1}\.([a-zA-Z]{1,6}|[a-zA-Z0-9-]{1,30}\.[a-zA-Z]{2,3})|((?:\d{1,3})(?:\.\d{1,3}){3}))(?::(\d{1,5}))$/;
@@ -201,7 +203,7 @@
             for (let repo_idx in source.repos) {
                 let repo_data = source.repos[repo_idx];
                 repo_data.site = site + repo_idx;
-
+                repo_data.queue = "ghub";
                 let newf = sourceFactory(repo_data);
                 iterateFour(newf);
             }
@@ -242,9 +244,48 @@
             what.go(source, type, parser, cb);
         }
 
-        let queue = async.queue((task, callback) => {
-            task(callback);
-        }, 12);
+        let queue = {
+            main: async.queue((task, callback) => { task(callback);}, konf.threads.main),
+            ghub: async.queue((task, callback) => { queue.ghub_active = true; task(callback);}, konf.threads.github),
+            file: async.queue((task, callback) => { queue.file_active = true; task(callback);}, konf.threads.file),
+            file_active: false,
+            ghub_active: false,
+            async drain(f){
+                queue.main.drain(()=>{
+                    klog.logger("queue.main drained.");
+                    if (queue.ghub_active) {
+                        queue.ghub.drain(()=>{
+                            klog.logger("queue.github drained.");
+                            if (queue.file_active) {
+                                queue.file.drain(()=>{
+                                    klog.logger("queue.file drained.");
+                                    f();
+                                })
+                            } else {
+                                klog.logger("queue.file nothing to do.");
+                                f();
+                            }
+                        })
+                    } else {
+                        klog.logger("queue.github nothing to do.");
+                        if (queue.file_active) {
+                            queue.file.drain(()=>{
+                                klog.logger("queue.file drained.");
+                                f();
+                            })
+                        } else {
+                            klog.logger("queue.file nothing to do.");
+                            f();
+                        }
+                    }
+                })
+            },
+            error(f){
+                queue.main.error(f);
+                queue.ghub.error(f);
+                queue.file.error(f);
+            }
+        };
 
         function resolveParser(source) {
             if (source.parser) {
@@ -262,7 +303,8 @@
             let parser = FormatType[resolveParser(source)].go(source);
             return function readProxyTypeFromSource(type) {
                 if (source.hasOwnProperty(type)) {
-                    queue.push(cb => enshroud(source, type, parser, cb));
+                    queue[source.queue || "main"]
+                        .push(cb => enshroud(source, type, parser, cb));
                     parsers.total++;
                 }
             }
@@ -292,18 +334,18 @@
         }
 
         function filespath(fpath) {
-            let opath = path.resolve(__dirname + "/../../data/" + fpath);
+            let opath = os.homedir()+"/.sleepwalker/" + fpath;
             if (!fs.existsSync(opath)) fs.mkdirSync(opath);
             let files = fs.readdirSync(opath);
             for (let idx = 0; idx < files.length; idx++) {
                 if (files[idx].toLowerCase().indexOf("socks4") > -1) {
-                    others.push({type: "file", path: opath, "socks4": files[idx]});
+                    others.push({type: "file", queue: "file", path: opath, "socks4": files[idx]});
                 } else if (files[idx].toLowerCase().indexOf("socks5") > -1) {
-                    others.push({type: "file", path: opath, "socks5": files[idx]});
+                    others.push({type: "file", queue: "file", path: opath, "socks5": files[idx]});
                 } else if (files[idx].toLowerCase().indexOf("https") > -1) {
-                    others.push({type: "file", path: opath, "https": files[idx]});
+                    others.push({type: "file", queue: "file", path: opath, "https": files[idx]});
                 } else {
-                    others.push({type: "file", path: opath, "http": files[idx]});
+                    others.push({type: "file", queue: "file", path: opath, "http": files[idx]});
                 }
             }
         }
