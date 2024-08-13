@@ -1,0 +1,24 @@
+{
+	proxytester: {
+		threads: 500,
+		timeout: 5000,
+		scamalytics: 10000,
+		cancelafter: 60000,
+		httpsretest: true
+	},
+	
+	importer: {
+		threads: {
+			github: 6,
+			main: 6,
+			file: 1
+		}
+	},
+
+	wrapper: {
+		threads: {
+			axios: 10,
+			puppeteer: 10
+		}
+	}
+}
