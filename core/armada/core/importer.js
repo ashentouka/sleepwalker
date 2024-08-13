@@ -37,7 +37,7 @@
         const async = require("async");
         const os = require("os");
 
-        const konf = require(path.resolve(__dirname + "/../../data/konf"))("importer");
+        const konf = require(path.resolve(__dirname + "/../../data/konf")).konf("importer");
 
         const protocols = ["http", "https", "socks4", "socks5"];
         const ip_port_regex = /(?:(\w+)(?::(\w*))@)?([a-zA-Z0-9][a-zA-Z0-9-_]{0,61}[a-zA-Z0-9]{0,1}\.([a-zA-Z]{1,6}|[a-zA-Z0-9-]{1,30}\.[a-zA-Z]{2,3})|((?:\d{1,3})(?:\.\d{1,3}){3}))(?::(\d{1,5}))$/;

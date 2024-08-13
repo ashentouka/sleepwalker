@@ -9,7 +9,7 @@
     const konsole = require("@sleepwalker/konsole").komponent("proxyarmada","red").komponent("proxytester","magenta");
 
     const datastore = require(path.resolve(__dirname + "/../../data/datasourcery"));
-    const konf = require(path.resolve(__dirname + "/../../data/konf"))("proxytester");
+    const konf = require(path.resolve(__dirname + "/../../data/konf")).konf("proxytester");
     const { ipinfo, scamalytics } = require("@sleepwalker/horde");
     const protocols = ["http", "https", "socks4", "socks5"];
 
