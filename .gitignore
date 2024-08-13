@@ -1,0 +1,10 @@
+.idea
+node_modules
+__r_e_c_y_c_l_e__
+@recycle
+core/armada/asn/*.json
+core/data/import
+core/data/export
+core/data/db
+core/wrapper/data
+yarn.lock

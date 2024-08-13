@@ -20,7 +20,7 @@
     "refresh-armada": "cd core/armada && yarn refresh",
     "refresh-service": "cd core/service && yarn refresh",
 
-    "clean": "yarn clean-disarray && yarn clean-konsole && yarn clean-data && yarn clean-horde && yarn clean-armada &&  yarn clean-wrapper && yarn clean-service",
+    "clean": "rm -rf node_modules && yarn clean-disarray && yarn clean-konsole && yarn clean-data && yarn clean-horde && yarn clean-armada &&  yarn clean-wrapper && yarn clean-service",
     "clean-horde": "cd horde && yarn clean",
     "clean-armada": "cd core/armada && yarn clean",
     "clean-disarray": "cd core/disarray && yarn clean",
