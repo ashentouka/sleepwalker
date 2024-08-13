@@ -170,6 +170,7 @@
                 let cancel = setTimeout(function(){
                     plaintext(path, source, (e, d) => {
                         if (e) {
+                            //console.log(e.message);
                             if (tries < konf.retrytimes) {
                                 clearTimeout(cancel);
                                 setTimeout(load, konf.retrydelay);

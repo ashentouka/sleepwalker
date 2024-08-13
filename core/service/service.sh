@@ -2,6 +2,6 @@
 MY_PATH="$(dirname -- "${BASH_SOURCE[0]}")"
 cd $MY_PATH
 mkdir ~/.sleepwalker/
-touch ~/.sleepwalker/armada.log
-touch ~/.sleepwalker/wrapper.log
+echo "" > ~/.sleepwalker/armada.log
+echo "" > ~/.sleepwalker/wrapper.log
 node service.js > ~/.sleepwalker/service.log 2>&1 &
