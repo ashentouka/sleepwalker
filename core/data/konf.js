@@ -10,9 +10,9 @@
 	if (!fs.existsSync(data_dir)){
 		fs.mkdirSync(data_dir);
 	}
-	let user_conf = (fs.existsSync(data_dir+"konf.json5")) ? require(data_dir+"konf.json5"): [];
+	let user_conf = (fs.existsSync(data_dir+"konf.json5")) ? require(data_dir+"konf.json5"): {};
 
-	const konf = Object.assign(user_conf,def_conf);
+	const konf = Object.assign(def_conf,user_conf);
 	fs.writeFileSync(data_dir+"konf.json5",JSON5.stringify(konf,null,2));
 	
 	module.exports = {
