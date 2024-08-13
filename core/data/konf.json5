@@ -8,6 +8,10 @@
 	},
 	
 	importer: {
+		retrytimes: 5,
+		retrydelay: 10000,
+		cancelafter: 60000,
+
 		threads: {
 			github: 6,
 			main: 6,

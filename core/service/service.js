@@ -122,6 +122,7 @@
   const component = require("./svcontrols");
   
   async function startWrapper(){
+    await component("armada").stop();
     const wrapper = component("wrapper");
     await wrapper.start(true);
   }

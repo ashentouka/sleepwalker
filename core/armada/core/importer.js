@@ -165,21 +165,25 @@
             const {plaintext} = require("./scrape");
             let path = createPath(source, type);
             let tries = 0;
-            function load(){
+            (function load(){
                 tries++;
-                plaintext(path, source, (e, d) => {
-                    if (e) {
-                        if (tries < 3) {
-                            setTimeout(load, 500);
+                let cancel = setTimeout(function(){
+                    plaintext(path, source, (e, d) => {
+                        if (e) {
+                            if (tries < konf.retrytimes) {
+                                clearTimeout(cancel);
+                                setTimeout(load, konf.retrydelay);
+                            } else {
+                                clearTimeout(cancel);
+                                sourceIncomplete(e, path, "url", cb);
+                            }
                         } else {
-                            sourceIncomplete(e, path, "url", cb);
+                            clearTimeout(cancel);
+                            parser(d, source.site, type, cb);
                         }
-                    } else {
-                        parser(d, source.site, type, cb);
-                    }
-                })
-            }
-            setTimeout(load, 500);
+                    })
+                },konf.cancelafter);
+            })()
         }
 
 /*        function proxyListLinks(source, cb) {

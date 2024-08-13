@@ -10,14 +10,20 @@
 	if (!fs.existsSync(data_dir)){
 		fs.mkdirSync(data_dir);
 	}
-	if (!fs.existsSync(data_dir+"konf.json5")){
-		fs.writeFileSync(data_dir+"konf.json5",JSON5.stringify(def_conf,null,2));
-	}
+	let user_conf = (fs.existsSync(data_dir+"konf.json5")) ? require(data_dir+"konf.json5"): [];
 
-	const user_conf = require(data_dir+"konf.json5");
 	const konf = Object.assign(user_conf,def_conf);
-
-	module.exports = function(group){
-		return konf[group];
+	fs.writeFileSync(data_dir+"konf.json5",JSON5.stringify(konf,null,2));
+	
+	module.exports = {
+		module(group){
+			return konf[group] || konf;
+		},
+		path(sub=""){
+			let o = data_dir+sub;
+			if (!fs.existsSync(o)){
+				fs.mkdirSync(o, { recursive: true });
+			}
+		}
 	}
 }
