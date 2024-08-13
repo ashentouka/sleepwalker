@@ -16,7 +16,7 @@
 	fs.writeFileSync(data_dir+"konf.json5",JSON5.stringify(konf,null,2));
 	
 	module.exports = {
-		module(group){
+		konf(group){
 			return konf[group] || konf;
 		},
 		path(sub=""){
