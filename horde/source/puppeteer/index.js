@@ -1,24 +1,24 @@
 {
     require("../util/sys");
-    function init ({ threads, concurrency, block, mobile = false, referer, fingerprint, userdata, extension, debug }) {
+    async function client ({ block, mobile = false, referer, fingerprint, userdata, extension, debug }) {
+        let browser, page;
+        return new Promise(resolve=>{
+            const {puppeteer,args} = abstract({ block, mobile, referer, fingerprint, userdata, extension, debug });
+            puppeteer.launch({ headless: true }).then(async b => {
+                browser = b;
+                const page = await browser.newPage();
+                resolve(page);
+            })
+        }).finally(async ()=>{
+            await browser?.close();
+        });
+    }
+
+    function abstract ({ block, mobile = false, referer, fingerprint, userdata, extension, debug }) {
         const puppeteer = require('puppeteer-extra').addExtra(require('puppeteer'));
-        const { Cluster } = require('puppeteer-cluster');
         const Xvfb =  require('xvfb');
         const path = require("path");
         const os = require("os");
-
-        threads = threads || 10;
-
-        const concurrency_mode = (()=>{
-            switch (concurrency) {
-            case "page":
-                return Cluster.CONCURRENCY_PAGE        
-            case "browser":
-                return Cluster.CONCURRENCY_BROWSER
-            default:
-                return Cluster.CONCURRENCY_CONTEXT
-            }
-        })();
 
         //puppeteer.use(require("../../xtra/scriptinjector")({ debug }));
         puppeteer.use(require("../../xtra/viewport")({ debug, mobile }));
@@ -81,9 +81,25 @@
             args.push(`--user-data-dir=${userdata}`)
         }
 
-        if (debug) console.log(args);
+        return { args, puppeteer, closeSession };
+    }
 
-        const clusterPromise = Cluster.launch({
+    const cluster = function({ threads = 10, concurrency, block, mobile = false, referer, fingerprint, userdata, extension, debug }){
+        const {puppeteer,args,closeSession} = abstract({ block, mobile, referer, fingerprint, userdata, extension, debug });
+
+        const { Cluster } = require('puppeteer-cluster');
+        const concurrency_mode = (()=>{
+            switch (concurrency) {
+            case "page":
+                return Cluster.CONCURRENCY_PAGE        
+            case "browser":
+                return Cluster.CONCURRENCY_BROWSER
+            default:
+                return Cluster.CONCURRENCY_CONTEXT
+            }
+        })();
+
+        const c_ARGS = {
             concurrency: concurrency_mode,
             maxConcurrency: threads,
             puppeteerOptions: {
@@ -91,9 +107,12 @@
                 args
             },
             puppeteer
-        });
+        };
 
-        return {
+        if (debug) console.log("puppeteer-cluster: launch options", c_ARGS);
+        const clusterPromise = Cluster.launch(c_ARGS)
+
+        return ({
             async task(f){
                 let cluster = await clusterPromise;
                 return cluster.task(f);
@@ -115,8 +134,11 @@
                 closeSession();
                 return cluster.close();
             }
-        };
+        })
     }
 
-    module.exports = init;
+    module.exports = {
+        cluster,
+        client
+    };
 }

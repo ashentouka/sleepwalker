@@ -3,22 +3,24 @@ function component(name){
     const path = require("path");
     const fs = require("fs");
 
+    const dir = require("@sleepwalker/router").dir;
+
     const {location,script} = (function(){
       switch(name){
         case "armada":
           return {
-            location: path.resolve(__dirname+"/../armada/"),
+            location: path.resolve(dir+"/core/armada/"),
             script: "core/core.js"
           }
         case "wrapper":
           return {
-            location: path.resolve(__dirname+"/../wrapper/"),
+            location: path.resolve(dir+"/core/wrapper/"),
             script: "servo.js"
           }
         case "service":
         default:
           return {
-            location: __dirname,
+            location: path.resolve(dir+"/core/service/"),
             script: "service.js"
           }
     }})();
@@ -44,7 +46,7 @@ function component(name){
         return new Promise(async resolve=>{
           if (restart) await API.stop();
           const { exec } = require("node:child_process");
-          exec(location+"/"+name+".sh", (stdout, stderr, err)=>{
+          exec(location + "/" + name+".sh", { cwd: location }, (stdout, stderr, err)=>{
             resolve(!err);
           })
         })

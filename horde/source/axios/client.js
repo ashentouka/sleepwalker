@@ -191,7 +191,7 @@
             }
         },
         
-        simple: simpleClient(),
+        client: simpleClient(),
         session: simpleClient(true),
         
         ipinfo({proxy,timeout}) { return simpleClient()(OPTS_IPINFO({ proxy, timeout })) },

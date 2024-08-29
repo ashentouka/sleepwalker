@@ -1,5 +1,4 @@
-const rowparser = require("../core/puppeteer/rowparser")
-const client = require('@sleepwalker/client-puppeteer');
+const rowparser = require("../core/puppeteer/rowparser");
 const loader = require('../core/cached-scraper');
 const urls = require("whatwg-url");
 

@@ -5,7 +5,7 @@
   "main": "disarray.js",
   "scripts": {
     "preinstall": "cat ascii",
-    "clean": "rm -rf node_modules"
+    "clean": "rm -rf node_modules yarn.lock"
   },
   "license": "ISC"
 }

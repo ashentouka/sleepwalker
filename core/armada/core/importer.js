@@ -2,23 +2,30 @@
     
     function init() {
 
-        let minimal = false, rescan = false, doimport = false, untested = false, debug = false;
-        
+        require('require-json5');
+        const fs = require("fs");
+        const path = require("path");
+        const async = require("async");
+        const os = require("os");
+
+        const konf = require("@sleepwalker/router").data.konf("importer");
+        let minimal = (konf.minimal), rescan = false, doimport = false, untested = false, debug = (konf.debug);
         
         (function argv_parse() {
             for (let argdx in process.argv) {
-                if (process.argv[argdx] === "--rescan") {
+/*                if (process.argv[argdx] === "--rescan") {
                     rescan = true;
                     break;
-                } else if (process.argv[argdx] === "--minimal") {
+                } else */
+                if (process.argv[argdx] === "--minimal") {
                     minimal = true;
                     break;
-                } else if (process.argv[argdx] === "--import") {
+            /*    } else if (process.argv[argdx] === "--import") {
                     doimport = true;
                     break;
                 } else if (process.argv[argdx] === "--untested") {
                     untested = true;
-                    break;
+                    break;*/
                 } else if (process.argv[argdx] === "--debug") {
                     debug = true;
                     break;
@@ -26,18 +33,11 @@
             }
         })();
 
-        
-        const { chalk, komponent, gradient } = require("@sleepwalker/konsole");
-        const klog = komponent("proxyarmada", "red").komponent("importer", "cyan");
-        require('require-json5');
         const source_fn = minimal ? "../minimal.json5" : "../sources.json5";
         const sources = require(source_fn);
-        const fs = require("fs");
-        const path = require("path");
-        const async = require("async");
-        const os = require("os");
-
-        const konf = require(path.resolve(__dirname + "/../../data/konf")).konf("importer");
+        
+        const { chalk, komponent, gradient } = require("@sleepwalker/router").konsole;
+        const klog = komponent("proxyarmada", "red").komponent("importer", "cyan");
 
         const protocols = ["http", "https", "socks4", "socks5"];
         const ip_port_regex = /(?:(\w+)(?::(\w*))@)?([a-zA-Z0-9][a-zA-Z0-9-_]{0,61}[a-zA-Z0-9]{0,1}\.([a-zA-Z]{1,6}|[a-zA-Z0-9-]{1,30}\.[a-zA-Z]{2,3})|((?:\d{1,3})(?:\.\d{1,3}){3}))(?::(\d{1,5}))$/;
@@ -89,7 +89,7 @@
             return prequery + (prequery.indexOf("?") > -1 ? "&" : "?") + `anticache=${new Date().getTime()}`
         }
 
-        function simpleHtmlScraperFactory(source) {
+/*        function simpleHtmlScraperFactory(source) {
             return function simpleHtmlScraper (tree, name, proto, callback) {
                 for (let idx = 0; idx < source.length; idx++) {
                     proxyURL(proto, tree[idx]);
@@ -114,7 +114,7 @@
                 }
                 sourceComplete(tree, proto, name, callback);
             }
-        }
+        } */
 
         function proxyTextParserFactory() {
             return function proxyTextParser (body, name, proto, callback) {
@@ -165,12 +165,21 @@
             const {plaintext} = require("./scrape");
             let path = createPath(source, type);
             let tries = 0;
+            
             (function load(){
                 tries++;
+                let killer = false;
+
                 let cancel = setTimeout(function(){
-                    plaintext(path, source, (e, d) => {
+                    if (debug) console.log("task unresponsive for 60s, killed", path);
+                    killer = true;
+                    load();
+                },konf.cancelafter);
+
+                plaintext(path, source, (e, d) => {
+                    if (!killer){
                         if (e) {
-                            //console.log(e.message);
+                            if (debug) console.log("error, attempt", tries, "of", konf.retrytimes, path, e.message);
                             if (tries < konf.retrytimes) {
                                 clearTimeout(cancel);
                                 setTimeout(load, konf.retrydelay);
@@ -182,8 +191,8 @@
                             clearTimeout(cancel);
                             parser(d, source.site, type, cb);
                         }
-                    })
-                },konf.cancelafter);
+                    }
+                })
             })()
         }
 
@@ -228,7 +237,7 @@
         }
 
         const SourceType = Object.freeze({
-            html: {go: simpleHtmlScraperFactory},
+  //          html: {go: simpleHtmlScraperFactory},
             file: {go: proxyListFile},
            // links: {go: proxyListLinks},
             github: {go: proxyGithub},
@@ -240,8 +249,8 @@
 
         const FormatType = Object.freeze({
             txt: {go: proxyTextParserFactory},
-            json: {go: proxyJsonParserFactory},
-            array: {go: proxyArrayParserFactory}
+    //        json: {go: proxyJsonParserFactory},
+    //        array: {go: proxyArrayParserFactory}
         })
 
         function enshroud(source, type, parser, cb) {
@@ -357,7 +366,7 @@
         
         function dbinit(){
             return new Promise(async resolve => {
-                const datastore = require(path.resolve(__dirname + "/../../data/datasourcery"));
+                const datastore = require("@sleepwalker/router").data.datasourcery;
                 proxproto.http = await datastore.getProxyList("http");
                 proxproto.https = await datastore.getProxyList("https");
                 proxproto.socks4 = await datastore.getProxyList("socks4");

@@ -1,6 +1,6 @@
 #!/usr/bin/node
 {
-    const { komponent, gradient, colors } = require("@sleepwalker/konsole");
+    const { komponent, gradient, colors } = require("@sleepwalker/router").konsole;
     const konsole = komponent("proxy", "red", "><").komponent("wrapper", "hotpink", "><");
 
     let startup = new Promise(resolve=>{
@@ -18,18 +18,18 @@
     //       m_spys: require("./modules/puppeteer/spysone"),
         } 
 
-        const m_fetch = {
-           m_sale: require("./modules/fetch/sale"),
-            m_dia: require("./modules/fetch/diatompel"),
-            m_fpl: require("./modules/fetch/fpl"),
-            m_geo: require("./modules/fetch/geonode"),
-        m_hasdata: require("./modules/fetch/hasdata"),
-          m_iploc: require("./modules/fetch/iploc"),
-          m_royal: require("./modules/fetch/iproyal"),
-          m_mtpro: require("./modules/fetch/mtpro"),
-        m_vpnfail: require("./modules/fetch/vpnfail"),
-          m_world: require("./modules/fetch/world"),
-           m_nord: require("./modules/fetch/nord")
+        const m_axios = {
+           m_sale: require("./modules/axios/sale"),
+            m_dia: require("./modules/axios/diatompel"),
+            m_fpl: require("./modules/axios/fpl"),
+            m_geo: require("./modules/axios/geonode"),
+        m_hasdata: require("./modules/axios/hasdata"),
+    //      m_iploc: require("./modules/axios/iploc"),
+          m_royal: require("./modules/axios/iproyal"),
+          m_mtpro: require("./modules/axios/mtpro"),
+        m_vpnfail: require("./modules/axios/vpnfail"),
+          m_world: require("./modules/axios/world"),
+           m_nord: require("./modules/axios/nord")
         } 
             ///TODO handle new single day trials
             //    m_hide = require("./modules/hidemy"),
@@ -67,12 +67,12 @@
 
         const THREADS = {
             PUPPETEER: 8,
-            FETCH: 4
+            AXIOS: 4
         };
 
         let queue = async.queue((task, callback) => {
             task().then(callback)
-        }, THREADS.FETCH);
+        }, THREADS.AXIOS);
 
 /*        let nova_promise = (()=>{
             const 
@@ -95,8 +95,10 @@
             })
         })();*/
 
-        const { puppeteer, simple } = require("@sleepwalker/horde");
-        const scraper = puppeteer({
+        const { cluster, client } = (()=>{ let ho = require("@sleepwalker/router").horde;
+            let cluster = ho.puppeteer.cluster, client = ho.simple.client;
+            return { cluster, client }})()
+        const scraper = cluster({
             block: { ads: true, trackers: true, resources: true },
             threads: THREADS.PUPPETEER
         })
@@ -116,13 +118,13 @@
         function process_all_modules() {
             const all_protocols = ['http', 'https', 'socks4', 'socks5'];
 
-            for (const key in m_fetch) {
+            for (const key in m_axios) {
                 let mod_queue = [];
                 m_total++
 
                 for (let proto_idx in all_protocols) {
                     proto = all_protocols[proto_idx];
-                    if (m_fetch[key][proto]) {
+                    if (m_axios[key][proto]) {
                         function module_proto(task_mm) {
                             mod_queue.push(function(cb) {
                                 task_mm().then(output=>{
@@ -135,7 +137,7 @@
                                 });
                             })
                         }
-                        module_proto(m_fetch[key][proto]);
+                        module_proto(m_axios[key][proto]);
                     }
                 }
             
@@ -171,14 +173,14 @@
             }
 
             queue.drain(function () {
-                konsole.logger("------------------------------------------\n[0/2]. fetch queue: complete\n");
+                konsole.logger("------------------------------------------\n[0/2]. axios queue: complete\n");
                 scraper.idle().then(function(){
                     konsole.logger("------------------------------------------\n[1/2]. puppeteer queue: complete\n");
                     scraper.close().then(function(){
                         setTimeout(function(){
                             konsole.logger("[2/2]. preload complete.");
                             endpoints.finished = true;
-                            simple({ url: "http://localhost:6660/signal" }).then(function(){
+                            client({ url: "http://localhost:6660/signal" }).then(function(){
                                 resolve();
                             })
                         },2000);

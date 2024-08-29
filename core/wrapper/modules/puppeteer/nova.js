@@ -11,7 +11,7 @@
     ];
 
     const loader = require("../../core/cached-scraper");
-    const parser = require("../../parsers/hybrid");
+    const parser = require("../../core/parsers/hybrid");
 
     const cheerio = require("cheerio");
 

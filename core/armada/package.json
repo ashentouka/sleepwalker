@@ -1,23 +1,19 @@
 {
   "name": "@sleepwalker/proxyarmada",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "core/core.js",
   "scripts": {
-    "clean": "rm -rf node_modules *.log asn/*.json",
+    "clean": "rm -rf node_modules yarn.lock asn/*.json",
     "preinstall": "cat ascii && cd asn && tar xf tar/asnmap.tar.xz && tar xf tar/asn.tar.xz",
-    "refresh": " yarn add ../disarray && yarn add ../konsole && yarn add ../../horde",
-    "untested": "node core/core.js --untested",
-    "minimal": "node core/core.js --minimal",
-    "rescan": "node core/core.js --rescan",
-    "import": "node core/core.js --import",
-    "debug": "node core/core.js --debug",
-    "armada": "node core/core.js"
+    "testdev": "./armada.sh --minimal --debug",
+    "minimal": "./armada.sh --minimal",
+    "debug": "./armada.sh --debug",
+    "armada": "./armada.sh"
   },
   "license": "ISC",
   "dependencies": {
-    "@sleepwalker/disarray": "../disarray",
-    "@sleepwalker/horde": "../../horde",
-    "@sleepwalker/konsole": "../konsole",
+    "@sleepwalker/router": "../../router/",
+    "async": "^3.2.5",
     "require-json5": "^1.3.0"
   }
 }

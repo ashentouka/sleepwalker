@@ -4,6 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "clean": "rm -rf node_modules && cd test && rm -rf node_modules"
+    "clean": "rm -rf node_modules yarn.lock && cd test && rm -rf node_modules yarn.lock"
   }
 }

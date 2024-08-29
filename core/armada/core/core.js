@@ -1,6 +1,6 @@
 {
     
-    const { StopWatch, gradient, komponent } = require("@sleepwalker/konsole");
+    const { StopWatch, gradient, komponent } = require("@sleepwalker/router").konsole;
     
     let log = komponent("proxyarmada","red");
 

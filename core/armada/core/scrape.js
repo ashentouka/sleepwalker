@@ -1,5 +1,5 @@
 {
-    const { simple } = require("@sleepwalker/horde");
+    const { client } = require("@sleepwalker/router").horde.simple;
 
     module.exports = {
 
@@ -10,7 +10,7 @@
                 data = source.post;
                 method = "post"
             }
-            simple({ url: path, accept: "text", method, data }).then(r=>cb(null,r.data)).catch(cb);
+            client({ url: path, accept: "text", method, data, timeout: 10000 }).then(r=>cb(null,r.data)).catch(cb);
         }
     }
 }

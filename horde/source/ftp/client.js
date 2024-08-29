@@ -4,7 +4,7 @@
 
     let poolsize = 10;
 
-    function connex ({ host, port, user, password, proxy }) {
+    function client ({ host, port, user, password, proxy }) {
 		return new Promise((resolve, reject)=>{
 
 	        //try {
@@ -39,7 +39,7 @@
 	}             
 
     module.exports = {
-        ftps({ threads }) {
+        cluster({ threads }) {
             let queue = async.queue((task, callback) => {
                 task(callback)
             }, threads || poolsize);
@@ -90,6 +90,6 @@
             }
         },
 
-        ftp: connex
+        client
     }
 }

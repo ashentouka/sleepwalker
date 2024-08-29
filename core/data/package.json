@@ -1,15 +1,14 @@
 {
   "name": "@sleepwalker/datasourcery",
   "version": "1.0.0",
-  "main": "datasourcery.js",
+  "main": "main.js",
   "license": "ISC",
   "scripts": {
     "preinstall": "cat ascii",
-    "refresh": "yarn add ../disarray",
-    "clean": "rm -rf node_modules db export import"
+    "clean": "rm -rf node_modules yarn.lock"
   },
   "dependencies": {
-    "@sleepwalker/disarray": "../disarray",
+    "@sleepwalker/router": "../../router/",
     "better-sqlite3": "^11.1.2",
     "json5": "^2.2.3",
     "require-json5": "^1.3.0"

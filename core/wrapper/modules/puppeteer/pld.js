@@ -1,5 +1,5 @@
 {
-    const { rowparser } = require("../../parsers/puppeteer");
+    const { rowparser } = require("../../core/parsers/puppeteer");
     const loader = require('../../core/cached-scraper');
     
     let scraper;

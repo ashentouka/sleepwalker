@@ -1,6 +1,6 @@
 {
     let runstat;
-    const { colors, chalk, komponent, gradient, StopWatch } = require("@sleepwalker/konsole");
+    const { colors, chalk, komponent, gradient, StopWatch } = require("@sleepwalker/router").konsole;
     const klog = komponent("proxyarmada","red").komponent("proxytester","magenta");
 
     module.exports = function (total,armada) {

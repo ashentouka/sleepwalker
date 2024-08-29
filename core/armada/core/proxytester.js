@@ -4,13 +4,13 @@
         path = require("path"),
         fs = require("fs");
 
-    const DisArray = require("@sleepwalker/disarray");
+    const DisArray = require("@sleepwalker/router").disarray;
 
-    const konsole = require("@sleepwalker/konsole").komponent("proxyarmada","red").komponent("proxytester","magenta");
+    const konsole = require("@sleepwalker/router").konsole.komponent("proxyarmada","red").komponent("proxytester","magenta");
 
-    const datastore = require(path.resolve(__dirname + "/../../data/datasourcery"));
-    const konf = require(path.resolve(__dirname + "/../../data/konf")).konf("proxytester");
-    const { ipinfo, scamalytics } = require("@sleepwalker/horde");
+    const datastore = require("@sleepwalker/router").data.datasourcery;
+    const konf = require("@sleepwalker/router").data.konf("proxytester");
+    const { ipinfo, scamalytics } = require("@sleepwalker/router").horde.simple;
     const protocols = ["http", "https", "socks4", "socks5"];
 
     let work_interval;

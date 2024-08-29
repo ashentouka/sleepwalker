@@ -1,5 +1,5 @@
 {
-    const { typesparser } = require("../../parsers/simple");
+    const { typesparser } = require("../../core/parsers/simple");
     const loader = require('../../core/cached-scraper');
 
     let protocache;

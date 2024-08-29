@@ -1,13 +1,13 @@
-{
+    {
     const fs = require("fs");
     const path = require("path");
 	let test_mod = process.argv[2];
-    let path_mod = (fs.existsSync(path.resolve(__dirname + `/../modules/fetch/${test_mod}.js`))) ? "fetch" : "puppeteer";
+    let path_mod = (fs.existsSync(path.resolve(__dirname + `/../modules/axios/${test_mod}.js`))) ? "axios" : "puppeteer";
 	const mod = require(`../modules/${path_mod}/${test_mod}.js`);
 
     if (mod.init){
-        const { puppeteer } = require("@sleepwalker/horde");
-        const scraper = puppeteer({
+        const { cluster } = require("@sleepwalker/router").horde.puppeteer;
+        const scraper = cluster({
             block: { ads: true, trackers: true, resources: true },
             concurrency: "page",
             threads: 1

@@ -8,13 +8,14 @@
 	},
 	
 	importer: {
-		retrytimes: 5,
-		retrydelay: 10000,
+		retrytimes: 3,
+		retrydelay: 5000,
 		cancelafter: 60000,
-
+		minimal: false,
+		debug: false,
 		threads: {
 			github: 6,
-			main: 6,
+			main: 10,
 			file: 1
 		}
 	},

@@ -1,4 +1,4 @@
 {
-    const { ipinfo } = require("@sleepwalker/horde");
+    const { ipinfo } = require("@sleepwalker/router").horde.simple;
     module.exports = ipinfo;
 }

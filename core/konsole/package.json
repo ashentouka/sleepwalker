@@ -5,9 +5,10 @@
   "license": "ISC",
   "scripts": {
     "preinstall": "cat ascii",
-    "clean": "rm -rf node_modules"
+    "clean": "rm -rf node_modules yarn.lock"
   },
   "dependencies": {
+    "@sleepwalker/router": "../../router/",
     "chalk": "^4.1.2",
     "chalk-animation": "^1.6.0",
     "chalk-css-colors": "https://github.com/paulwardrip/chalk-css-colors.git",

@@ -1,19 +1,16 @@
 {
   "name": "@sleepwalker/service",
-  "main": "servo.js",
+  "main": "starter.js",
   "version": "1.0.2",
   "license": "ISC",
   "scripts": {
     "preinstall": "cat ascii",
-    "clean": "rm -rf node_modules *.log *.pid",
-    "refresh": "yarn add ../disarray && yarn add ../konsole && yarn add ../../horde",
-    "start": "node starter.js"
+    "clean": "rm -rf node_modules yarn.lock",
+    "start": "node starter.js",
+    "stop": "node starter.js kill"
   },
   "dependencies": {
-    "@sleepwalker/disarray": "../disarray",
-    "@sleepwalker/horde": "../../horde",
-    "@sleepwalker/konsole": "../konsole",
-    "@sleepwalker/proxy-armada": "../armada/",
+    "@sleepwalker/router": "../../router/",
     "body-parser": "^1.20.2",
     "express": "^4.19.2",
     "express-static": "^1.2.6",

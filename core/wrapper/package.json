@@ -5,14 +5,12 @@
   "license": "ISC",
   "scripts": {
     "preinstall": "cat ascii",
-    "refresh": "yarn add ../konsole && yarn add ../../horde",
-    "clean": "rm -rf data node_modules *.traineddata *.log *.pid ",
+    "clean": "rm -rf node_modules yarn.lock",
     "start": "./wrapper.sh",
     "go": "node servo.js"
   },
   "dependencies": {
-    "@sleepwalker/horde": "../../horde",
-    "@sleepwalker/konsole": "../konsole",
+    "@sleepwalker/router": "../../router/",
     "async": "^3.2.5",
     "cheerio": "^1.0.0-rc.12",
     "express": "^4.19.2",

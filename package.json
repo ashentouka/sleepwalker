@@ -2,8 +2,9 @@
   "name": "sleepwalker",
   "version": "1.0.0",
   "license": "ISC",
+
   "scripts": {
-    "preinstall": "cat ascii && ./apt.sh && yarn setup-core && yarn setup-horde && yarn setup-server",
+    "preinstall": "cat ascii && ./apt.sh && node install.js && yarn setup-core && yarn setup-horde && yarn setup-server",
     "setup-core": "yarn setup-disarray && yarn setup-konsole && yarn setup-data",
     "setup-server": "yarn setup-wrapper && yarn setup-armada && yarn setup-service",
     "setup-disarray": "cd core/disarray && yarn",
@@ -14,13 +15,7 @@
     "setup-armada": "cd core/armada && yarn",
     "setup-service": "cd core/service && yarn",
 
-    "refresh": "yarn refresh-data && yarn refresh-wrapper && yarn refresh-armada && yarn refresh-service",
-    "refresh-data": "cd core/data && yarn refresh",
-    "refresh-wrapper": "cd core/wrapper && yarn refresh",
-    "refresh-armada": "cd core/armada && yarn refresh",
-    "refresh-service": "cd core/service && yarn refresh",
-
-    "clean": "rm -rf node_modules && yarn clean-disarray && yarn clean-konsole && yarn clean-data && yarn clean-horde && yarn clean-armada &&  yarn clean-wrapper && yarn clean-service",
+    "clean": "rm -rf node_modules router yarn.lock && yarn clean-disarray && yarn clean-konsole && yarn clean-data && yarn clean-horde && yarn clean-armada &&  yarn clean-wrapper && yarn clean-service",
     "clean-horde": "cd horde && yarn clean",
     "clean-armada": "cd core/armada && yarn clean",
     "clean-disarray": "cd core/disarray && yarn clean",
@@ -29,8 +24,9 @@
     "clean-wrapper": "cd core/wrapper && yarn clean",
     "clean-service": "cd core/service && yarn clean",
 
-    "tarball": "yarn clean && rm -f armada.tar.xz && tar cvf armada.tar.xz --exclude 'test/*' core/ horde/ apt.sh ascii package.json",
+    "tarball": "yarn clean && rm armada.tar.xz && tar cvf armada.tar.xz --exclude 'test/*' core/ horde/ apt.sh ascii package.json",
 
-    "start": "cd core/service && yarn start"
+    "start": "cd core/service && yarn start",
+    "stop": "cd core/service && yarn stop"
   }
 }

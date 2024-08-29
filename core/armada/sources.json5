@@ -202,8 +202,8 @@
   {
     "site": "https://api.openproxylist.xyz/",
     "http": "http.txt",
-    "sdcks4": "socks4.txt",
-    "sdcks5": "socks4.txt"
+    "socks4": "socks4.txt",
+    "socks5": "socks45.txt"
   },
   {
     "site": "http://hack-hack.chat.ru/",

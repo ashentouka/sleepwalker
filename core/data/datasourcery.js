@@ -1,5 +1,5 @@
 {
-	const DisArray = require("@sleepwalker/disarray");
+	const DisArray = require("../disarray");
 	const path = require("path");
 	const fs = require("fs");
 	const os = require("os");
